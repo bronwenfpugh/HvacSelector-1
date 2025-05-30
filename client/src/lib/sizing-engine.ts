@@ -66,10 +66,12 @@ function evaluateEquipment(
       return evaluateHeatPump(equipment, loadInputs, preferences, shr, latentCooling, warnings, instructions);
     
     case 'boiler':
-      return evaluateBoiler(equipment, loadInputs, preferences, warnings, instructions);
+      const boilerResult = evaluateBoiler(equipment, loadInputs, preferences, warnings, instructions);
+      return boilerResult;
     
     case 'furnace_ac_combo':
-      return evaluateComboSystem(equipment, loadInputs, preferences, shr, latentCooling, warnings, instructions);
+      const comboResult = evaluateComboSystem(equipment, loadInputs, preferences, shr, latentCooling, warnings, instructions);
+      return comboResult;
     
     default:
       return null;
@@ -112,6 +114,7 @@ function passesFilters(equipment: Equipment, preferences: UserPreferences): bool
 function evaluateFurnace(
   equipment: Equipment,
   loadInputs: LoadInputs,
+  preferences: UserPreferences,
   warnings: string[],
   instructions: string[]
 ): EquipmentRecommendation | null {
@@ -159,6 +162,7 @@ function evaluateFurnace(
 function evaluateAirConditioner(
   equipment: Equipment,
   loadInputs: LoadInputs,
+  preferences: UserPreferences,
   shr: number,
   warnings: string[],
   instructions: string[]
@@ -320,5 +324,97 @@ function evaluateHeatPump(
     instructions,
     backupHeatRequired,
     recommendedCfm,
+  };
+}
+
+function evaluateBoiler(
+  equipment: Equipment,
+  loadInputs: LoadInputs,
+  preferences: UserPreferences,
+  warnings: string[],
+  instructions: string[]
+): EquipmentRecommendation | null {
+  if (!equipment.heatingCapacityBtu || loadInputs.totalHeatingBtu === 0) return null;
+
+  const actualOutput = equipment.heatingCapacityBtu;
+  const sizingPercentage = Math.round((actualOutput / loadInputs.totalHeatingBtu) * 100);
+  let sizingStatus: 'optimal' | 'acceptable' | 'oversized' | 'undersized' = 'undersized';
+
+  if (sizingPercentage >= 100 && sizingPercentage <= 125) {
+    sizingStatus = 'optimal';
+  } else if (sizingPercentage >= 125 && sizingPercentage <= 150) {
+    sizingStatus = 'acceptable';
+    warnings.push(`This boiler is ${sizingPercentage}% of the heating load. Consider if oversizing is appropriate for pickup and recovery.`);
+  } else if (sizingPercentage > 150) {
+    sizingStatus = 'oversized';
+    warnings.push(`This boiler is significantly oversized at ${sizingPercentage}% of load. May cause short cycling and reduced efficiency.`);
+  } else {
+    return null; // Don't show undersized equipment
+  }
+
+  // Add hydronic-specific instructions
+  if (equipment.distributionType === 'hydronic') {
+    instructions.push('Verify zone control and pump sizing for proper flow rates');
+    instructions.push('Consider boiler reset controls for optimal efficiency');
+  }
+
+  return {
+    equipment,
+    sizingStatus,
+    sizingPercentage,
+    backupHeatRequired: undefined,
+    recommendedCfm: undefined,
+    warnings,
+    instructions,
+  };
+}
+
+function evaluateComboSystem(
+  equipment: Equipment,
+  loadInputs: LoadInputs,
+  preferences: UserPreferences,
+  shr: number,
+  latentCooling: number,
+  warnings: string[],
+  instructions: string[]
+): EquipmentRecommendation | null {
+  if (!equipment.heatingCapacityBtu || !equipment.coolingCapacityBtu) return null;
+  if (loadInputs.totalHeatingBtu === 0 && loadInputs.totalCoolingBtu === 0) return null;
+
+  const heatingPercentage = loadInputs.totalHeatingBtu > 0 
+    ? Math.round((equipment.heatingCapacityBtu / loadInputs.totalHeatingBtu) * 100)
+    : 100;
+  
+  const coolingPercentage = loadInputs.totalCoolingBtu > 0
+    ? Math.round((equipment.coolingCapacityBtu / loadInputs.totalCoolingBtu) * 100)
+    : 100;
+
+  // System must meet both heating and cooling loads adequately
+  if (heatingPercentage < 100 || coolingPercentage < 100) {
+    return null; // Don't show undersized equipment
+  }
+
+  let sizingStatus: 'optimal' | 'acceptable' | 'oversized' | 'undersized' = 'optimal';
+  const avgPercentage = Math.round((heatingPercentage + coolingPercentage) / 2);
+
+  if (heatingPercentage > 140 || coolingPercentage > 130) {
+    sizingStatus = 'oversized';
+    warnings.push(`System oversized - Heating: ${heatingPercentage}%, Cooling: ${coolingPercentage}%`);
+  } else if (heatingPercentage > 125 || coolingPercentage > 115) {
+    sizingStatus = 'acceptable';
+  }
+
+  // Add combo-specific instructions
+  instructions.push('Verify shared ductwork is sized for both heating and cooling airflow requirements');
+  instructions.push('Consider zoning controls if heating and cooling loads vary significantly by area');
+
+  return {
+    equipment,
+    sizingStatus,
+    sizingPercentage: avgPercentage,
+    backupHeatRequired: undefined,
+    recommendedCfm: Math.round((equipment.coolingCapacityBtu || 0) / 12000 * 400),
+    warnings,
+    instructions,
   };
 }

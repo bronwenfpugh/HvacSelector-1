@@ -4,7 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Calculator, Settings } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Calculator, Settings, ChevronDown, Filter } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { LoadInputs, UserPreferences } from "@shared/schema";
 
@@ -28,6 +30,8 @@ export default function LoadInputForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [latentCooling, setLatentCooling] = useState(0);
   const [shr, setShr] = useState(0);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
   // Calculate derived values
   useEffect(() => {
@@ -39,10 +43,14 @@ export default function LoadInputForm({
   }, [loadInputs.totalCoolingBtu, loadInputs.sensibleCoolingBtu]);
 
   const validateInput = (field: keyof LoadInputs, value: number): string => {
-    const validationRules = {
+    const validationRules: Record<string, { min: number; max: number; name: string }> = {
       totalHeatingBtu: { min: 0, max: 500000, name: "Total Heating Load" },
       totalCoolingBtu: { min: 0, max: 500000, name: "Total Cooling Load" },
       sensibleCoolingBtu: { min: 0, max: 500000, name: "Sensible Cooling Load" },
+      outdoorSummerDesignTemp: { min: -30, max: 150, name: "Outdoor Summer Design Temperature" },
+      outdoorWinterDesignTemp: { min: -30, max: 150, name: "Outdoor Winter Design Temperature" },
+      elevation: { min: -3000, max: 30000, name: "Elevation" },
+      indoorHumidity: { min: 0, max: 100, name: "Indoor Humidity" },
     };
 
     const rule = validationRules[field];
@@ -82,6 +90,47 @@ export default function LoadInputForm({
     onPreferencesChange({ 
       ...preferences, 
       sizingPreference: value as 'size_to_heating' | 'size_to_cooling' 
+    });
+  };
+
+  const handleDistributionTypeChange = (value: string) => {
+    onPreferencesChange({
+      ...preferences,
+      distributionType: value as 'ducted' | 'ductless' | 'hydronic'
+    });
+  };
+
+  const handleBrandFilterChange = (brands: string[]) => {
+    onPreferencesChange({
+      ...preferences,
+      brandFilter: brands.length > 0 ? brands : undefined
+    });
+  };
+
+  const handleStagingFilterChange = (staging: string, checked: boolean) => {
+    const newStaging = checked 
+      ? [...(preferences.stagingFilter || []), staging as any]
+      : (preferences.stagingFilter || []).filter(s => s !== staging);
+    
+    onPreferencesChange({
+      ...preferences,
+      stagingFilter: newStaging.length > 0 ? newStaging : undefined
+    });
+  };
+
+  const handleMinAfueChange = (value: string) => {
+    const numValue = parseFloat(value) || undefined;
+    onPreferencesChange({
+      ...preferences,
+      minAfue: numValue
+    });
+  };
+
+  const handleMaxPriceChange = (value: string) => {
+    const numValue = parseFloat(value) || undefined;
+    onPreferencesChange({
+      ...preferences,
+      maxPrice: numValue
     });
   };
 
@@ -187,6 +236,95 @@ export default function LoadInputForm({
           </div>
         </div>
 
+        {/* Advanced Load Inputs */}
+        <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
+          <CollapsibleTrigger asChild>
+            <Button variant="ghost" className="w-full justify-between p-0 h-auto">
+              <h3 className="text-lg font-semibold text-carbon">Advanced Load Inputs</h3>
+              <ChevronDown className={`h-4 w-4 transition-transform ${showAdvanced ? 'rotate-180' : ''}`} />
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="space-y-4 mt-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="summerTemp" className="text-sm font-medium text-carbon">
+                  Summer Design (°F)
+                </Label>
+                <Input
+                  id="summerTemp"
+                  type="number"
+                  placeholder="95"
+                  min="-30"
+                  max="150"
+                  value={loadInputs.outdoorSummerDesignTemp || ""}
+                  onChange={(e) => handleInputChange('outdoorSummerDesignTemp', e.target.value)}
+                  className="mt-2"
+                />
+                {errors.outdoorSummerDesignTemp && (
+                  <div className="mt-1 text-xs text-error-red">{errors.outdoorSummerDesignTemp}</div>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="winterTemp" className="text-sm font-medium text-carbon">
+                  Winter Design (°F)
+                </Label>
+                <Input
+                  id="winterTemp"
+                  type="number"
+                  placeholder="10"
+                  min="-30"
+                  max="150"
+                  value={loadInputs.outdoorWinterDesignTemp || ""}
+                  onChange={(e) => handleInputChange('outdoorWinterDesignTemp', e.target.value)}
+                  className="mt-2"
+                />
+                {errors.outdoorWinterDesignTemp && (
+                  <div className="mt-1 text-xs text-error-red">{errors.outdoorWinterDesignTemp}</div>
+                )}
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="elevation" className="text-sm font-medium text-carbon">
+                  Elevation (ft)
+                </Label>
+                <Input
+                  id="elevation"
+                  type="number"
+                  placeholder="1000"
+                  min="-3000"
+                  max="30000"
+                  value={loadInputs.elevation || ""}
+                  onChange={(e) => handleInputChange('elevation', e.target.value)}
+                  className="mt-2"
+                />
+                {errors.elevation && (
+                  <div className="mt-1 text-xs text-error-red">{errors.elevation}</div>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="humidity" className="text-sm font-medium text-carbon">
+                  Indoor Humidity (%)
+                </Label>
+                <Input
+                  id="humidity"
+                  type="number"
+                  placeholder="50"
+                  min="0"
+                  max="100"
+                  value={loadInputs.indoorHumidity || ""}
+                  onChange={(e) => handleInputChange('indoorHumidity', e.target.value)}
+                  className="mt-2"
+                />
+                {errors.indoorHumidity && (
+                  <div className="mt-1 text-xs text-error-red">{errors.indoorHumidity}</div>
+                )}
+              </div>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+
         {/* Equipment Type Selector */}
         <div>
           <h3 className="text-lg font-semibold text-carbon mb-4">Equipment Types</h3>
@@ -195,6 +333,8 @@ export default function LoadInputForm({
               { id: 'furnace', label: 'Furnaces' },
               { id: 'ac', label: 'Air Conditioners' },
               { id: 'heat_pump', label: 'Heat Pumps' },
+              { id: 'boiler', label: 'Boilers' },
+              { id: 'furnace_ac_combo', label: 'Furnace + AC Combos' },
             ].map(({ id, label }) => (
               <div key={id} className="flex items-center space-x-3">
                 <Checkbox
@@ -236,6 +376,119 @@ export default function LoadInputForm({
             </div>
           </div>
         )}
+
+        {/* Equipment Filters */}
+        <Collapsible open={showFilters} onOpenChange={setShowFilters}>
+          <CollapsibleTrigger asChild>
+            <Button variant="ghost" className="w-full justify-between p-0 h-auto">
+              <h3 className="text-lg font-semibold text-carbon flex items-center space-x-2">
+                <Filter className="h-4 w-4" />
+                <span>Equipment Filters</span>
+              </h3>
+              <ChevronDown className={`h-4 w-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="space-y-4 mt-4">
+            {/* Distribution Type */}
+            <div>
+              <Label className="text-sm font-medium text-carbon">Distribution Type</Label>
+              <Select
+                value={preferences.distributionType || ""}
+                onValueChange={handleDistributionTypeChange}
+              >
+                <SelectTrigger className="mt-2">
+                  <SelectValue placeholder="Any distribution type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">Any distribution type</SelectItem>
+                  <SelectItem value="ducted">Ducted</SelectItem>
+                  <SelectItem value="ductless">Ductless</SelectItem>
+                  <SelectItem value="hydronic">Hydronic</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Brand Filter */}
+            <div>
+              <Label className="text-sm font-medium text-carbon">Brand Filter</Label>
+              <Select
+                value={preferences.brandFilter?.[0] || ""}
+                onValueChange={(value) => handleBrandFilterChange(value ? [value] : [])}
+              >
+                <SelectTrigger className="mt-2">
+                  <SelectValue placeholder="Any brand" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">Any brand</SelectItem>
+                  <SelectItem value="Carrier">Carrier</SelectItem>
+                  <SelectItem value="Trane">Trane</SelectItem>
+                  <SelectItem value="Lennox">Lennox</SelectItem>
+                  <SelectItem value="Rheem">Rheem</SelectItem>
+                  <SelectItem value="Goodman">Goodman</SelectItem>
+                  <SelectItem value="American Standard">American Standard</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Staging Filter */}
+            <div>
+              <Label className="text-sm font-medium text-carbon mb-3 block">Staging Types</Label>
+              <div className="space-y-2">
+                {[
+                  { id: 'single_stage', label: 'Single Stage' },
+                  { id: 'two_stage', label: 'Two Stage' },
+                  { id: 'variable_speed', label: 'Variable Speed' },
+                ].map(({ id, label }) => (
+                  <div key={id} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`staging-${id}`}
+                      checked={preferences.stagingFilter?.includes(id as any) || false}
+                      onCheckedChange={(checked) => handleStagingFilterChange(id, checked as boolean)}
+                    />
+                    <Label htmlFor={`staging-${id}`} className="text-sm font-medium text-carbon cursor-pointer">
+                      {label}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* AFUE Filter */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="minAfue" className="text-sm font-medium text-carbon">
+                  Min AFUE (%)
+                </Label>
+                <Input
+                  id="minAfue"
+                  type="number"
+                  placeholder="80"
+                  min="70"
+                  max="98"
+                  step="1"
+                  value={preferences.minAfue ? Math.round(preferences.minAfue * 100) : ""}
+                  onChange={(e) => handleMinAfueChange((parseFloat(e.target.value) || 0) / 100)}
+                  className="mt-2"
+                />
+              </div>
+              <div>
+                <Label htmlFor="maxPrice" className="text-sm font-medium text-carbon">
+                  Max Price ($)
+                </Label>
+                <Input
+                  id="maxPrice"
+                  type="number"
+                  placeholder="5000"
+                  min="0"
+                  step="100"
+                  value={preferences.maxPrice || ""}
+                  onChange={(e) => handleMaxPriceChange(e.target.value)}
+                  className="mt-2"
+                />
+              </div>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
 
         {/* Calculate Button */}
         <Button

@@ -50,19 +50,63 @@ function evaluateEquipment(
   let backupHeatRequired: number | undefined;
   let recommendedCfm: number | undefined;
 
+  // Apply equipment filters
+  if (!passesFilters(equipment, preferences)) {
+    return null;
+  }
+
   switch (equipment.equipmentType) {
     case 'furnace':
-      return evaluateFurnace(equipment, loadInputs, warnings, instructions);
+      return evaluateFurnace(equipment, loadInputs, preferences, warnings, instructions);
     
     case 'ac':
-      return evaluateAirConditioner(equipment, loadInputs, shr, warnings, instructions);
+      return evaluateAirConditioner(equipment, loadInputs, preferences, shr, warnings, instructions);
     
     case 'heat_pump':
       return evaluateHeatPump(equipment, loadInputs, preferences, shr, latentCooling, warnings, instructions);
     
+    case 'boiler':
+      return evaluateBoiler(equipment, loadInputs, preferences, warnings, instructions);
+    
+    case 'furnace_ac_combo':
+      return evaluateComboSystem(equipment, loadInputs, preferences, shr, latentCooling, warnings, instructions);
+    
     default:
       return null;
   }
+}
+
+function passesFilters(equipment: Equipment, preferences: UserPreferences): boolean {
+  // Brand filter
+  if (preferences.brandFilter && preferences.brandFilter.length > 0) {
+    if (!preferences.brandFilter.includes(equipment.manufacturer)) {
+      return false;
+    }
+  }
+
+  // Distribution type filter
+  if (preferences.distributionType && equipment.distributionType !== preferences.distributionType) {
+    return false;
+  }
+
+  // Staging filter
+  if (preferences.stagingFilter && preferences.stagingFilter.length > 0) {
+    if (!preferences.stagingFilter.includes(equipment.staging)) {
+      return false;
+    }
+  }
+
+  // AFUE filter
+  if (preferences.minAfue && equipment.afue && equipment.afue < preferences.minAfue) {
+    return false;
+  }
+
+  // Price filter
+  if (preferences.maxPrice && equipment.price > preferences.maxPrice) {
+    return false;
+  }
+
+  return true;
 }
 
 function evaluateFurnace(

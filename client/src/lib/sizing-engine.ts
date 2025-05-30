@@ -325,6 +325,8 @@ function evaluateHeatPump(
       coolingCapacityBtu: equipment.coolingCapacityBtu,
       seer: equipment.seer,
       hspf: equipment.hspf,
+      nominalBtu: equipment.nominalBtu,
+      afue: equipment.afue,
       imageUrl: equipment.imageUrl,
     },
     sizingStatus,

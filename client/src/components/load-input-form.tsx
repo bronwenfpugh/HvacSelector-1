@@ -33,14 +33,46 @@ export default function LoadInputForm({
   const [latentCooling, setLatentCooling] = useState(0);
   const [shr, setShr] = useState(0);
 
-  // Calculate derived values
+  // Calculate derived values and validate relationships
   useEffect(() => {
     const latent = Math.max(0, loadInputs.totalCoolingBtu - loadInputs.sensibleCoolingBtu);
     const shrValue = loadInputs.totalCoolingBtu > 0 ? loadInputs.sensibleCoolingBtu / loadInputs.totalCoolingBtu : 0;
     
     setLatentCooling(latent);
     setShr(shrValue);
-  }, [loadInputs.totalCoolingBtu, loadInputs.sensibleCoolingBtu]);
+
+    // Clear existing cross-validation errors
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors.sensibleCoolingBtu;
+      delete newErrors.totalHeatingBtu;
+      return newErrors;
+    });
+
+    // Add cross-validation for sensible cooling vs total cooling
+    if (loadInputs.totalCoolingBtu > 0 && loadInputs.sensibleCoolingBtu > loadInputs.totalCoolingBtu) {
+      setErrors(prev => ({
+        ...prev,
+        sensibleCoolingBtu: "Cannot exceed total cooling load"
+      }));
+    }
+
+    // Add validation for sensible heat ratio
+    if (loadInputs.totalCoolingBtu > 0 && (shrValue < 0.65 || shrValue > 1.0)) {
+      setErrors(prev => ({
+        ...prev,
+        sensibleCoolingBtu: `Sensible heat ratio ${(shrValue * 100).toFixed(0)}% is outside normal range (65-100%)`
+      }));
+    }
+
+    // Validate that at least one load is provided
+    if (loadInputs.totalHeatingBtu === 0 && loadInputs.totalCoolingBtu === 0) {
+      setErrors(prev => ({
+        ...prev,
+        totalHeatingBtu: "Enter either heating or cooling load"
+      }));
+    }
+  }, [loadInputs.totalCoolingBtu, loadInputs.sensibleCoolingBtu, loadInputs.totalHeatingBtu]);
 
   const validateInput = (field: keyof LoadInputs, value: number): string => {
     const validationRules: Record<string, { min: number; max: number; name: string }> = {

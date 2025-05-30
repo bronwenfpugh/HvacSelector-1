@@ -1,5 +1,98 @@
 import type { LoadInputs, UserPreferences, Equipment, EquipmentRecommendation } from "@shared/schema";
 
+// Equipment-specific validation functions
+function validateEquipmentSpecs(equipment: Equipment): string[] {
+  const errors: string[] = [];
+
+  switch (equipment.equipmentType) {
+    case 'furnace':
+      if (equipment.afue && (equipment.afue < 0.80 || equipment.afue > 0.98)) {
+        errors.push(`Furnace AFUE rating ${(equipment.afue * 100).toFixed(0)}% is outside typical range (80-98%)`);
+      }
+      if (equipment.heatingCapacityBtu && equipment.nominalBtu && 
+          equipment.heatingCapacityBtu > equipment.nominalBtu * 1.1) {
+        errors.push(`Heating capacity exceeds nominal input by more than 10% - verify manufacturer data`);
+      }
+      break;
+
+    case 'ac':
+      if (equipment.seer && (equipment.seer < 13 || equipment.seer > 25)) {
+        errors.push(`AC SEER rating ${equipment.seer} is outside typical range (13-25)`);
+      }
+      if (equipment.nominalTons && equipment.coolingCapacityBtu &&
+          Math.abs(equipment.coolingCapacityBtu - (equipment.nominalTons * 12000)) > 2000) {
+        errors.push(`Cooling capacity doesn't match nominal tonnage - verify equipment specifications`);
+      }
+      break;
+
+    case 'heat_pump':
+      if (equipment.seer && (equipment.seer < 13 || equipment.seer > 25)) {
+        errors.push(`Heat pump SEER rating ${equipment.seer} is outside typical range (13-25)`);
+      }
+      if (equipment.hspf && (equipment.hspf < 8 || equipment.hspf > 15)) {
+        errors.push(`Heat pump HSPF rating ${equipment.hspf} is outside typical range (8-15)`);
+      }
+      if (equipment.heatingCapacityBtu && equipment.coolingCapacityBtu &&
+          equipment.heatingCapacityBtu > equipment.coolingCapacityBtu * 1.5) {
+        errors.push(`Heating capacity significantly exceeds cooling capacity - verify cold climate heat pump specifications`);
+      }
+      break;
+
+    case 'boiler':
+      if (equipment.afue && (equipment.afue < 0.80 || equipment.afue > 0.98)) {
+        errors.push(`Boiler AFUE rating ${(equipment.afue * 100).toFixed(0)}% is outside typical range (80-98%)`);
+      }
+      if (equipment.distributionType !== 'hydronic') {
+        errors.push(`Boiler must use hydronic distribution system`);
+      }
+      break;
+
+    case 'furnace_ac_combo':
+      if (equipment.afue && (equipment.afue < 0.80 || equipment.afue > 0.98)) {
+        errors.push(`Combo system furnace AFUE rating ${(equipment.afue * 100).toFixed(0)}% is outside typical range (80-98%)`);
+      }
+      if (equipment.seer && (equipment.seer < 13 || equipment.seer > 25)) {
+        errors.push(`Combo system AC SEER rating ${equipment.seer} is outside typical range (13-25)`);
+      }
+      if (!equipment.heatingCapacityBtu || !equipment.coolingCapacityBtu) {
+        errors.push(`Combo system must have both heating and cooling capacities`);
+      }
+      break;
+  }
+
+  return errors;
+}
+
+// Comprehensive load validation
+function validateLoadInputs(loadInputs: LoadInputs): string[] {
+  const errors: string[] = [];
+
+  // Check for unrealistic load combinations
+  if (loadInputs.totalHeatingBtu > 200000 && loadInputs.totalCoolingBtu > 100000) {
+    errors.push(`Very high heating (${loadInputs.totalHeatingBtu.toLocaleString()}) and cooling (${loadInputs.totalCoolingBtu.toLocaleString()}) loads - verify Manual J calculations`);
+  }
+
+  // Check for extremely low sensible heat ratios
+  if (loadInputs.totalCoolingBtu > 0) {
+    const shr = loadInputs.sensibleCoolingBtu / loadInputs.totalCoolingBtu;
+    if (shr < 0.70) {
+      errors.push(`Very low sensible heat ratio (${(shr * 100).toFixed(0)}%) indicates high latent load - consider dehumidification equipment`);
+    }
+  }
+
+  // Check for unbalanced loads in moderate climates
+  if (loadInputs.totalHeatingBtu > 0 && loadInputs.totalCoolingBtu > 0) {
+    const ratio = loadInputs.totalHeatingBtu / loadInputs.totalCoolingBtu;
+    if (ratio > 3.0) {
+      errors.push(`Heating load is ${ratio.toFixed(1)}x cooling load - verify building envelope and climate zone`);
+    } else if (ratio < 0.5) {
+      errors.push(`Cooling load is ${(1/ratio).toFixed(1)}x heating load - consider cooling-focused equipment selection`);
+    }
+  }
+
+  return errors;
+}
+
 // Helper function to create properly typed equipment objects for recommendations
 function createEquipmentRecommendationObject(
   equipment: Equipment,
@@ -115,6 +208,9 @@ export function calculateEquipmentRecommendations(
 ): EquipmentRecommendation[] {
   const recommendations: EquipmentRecommendation[] = [];
   
+  // Validate load inputs and add warnings to all recommendations
+  const loadValidationErrors = validateLoadInputs(loadInputs);
+  
   // Calculate derived values
   const latentCooling = loadInputs.totalCoolingBtu - loadInputs.sensibleCoolingBtu;
   const shr = loadInputs.totalCoolingBtu > 0 ? loadInputs.sensibleCoolingBtu / loadInputs.totalCoolingBtu : 0;
@@ -125,8 +221,14 @@ export function calculateEquipmentRecommendations(
   );
 
   for (const equipment of filteredEquipment) {
+    // Validate equipment specifications
+    const equipmentValidationErrors = validateEquipmentSpecs(equipment);
+    
     const recommendation = evaluateEquipment(equipment, loadInputs, preferences, shr, latentCooling);
     if (recommendation) {
+      // Add validation warnings to the recommendation
+      recommendation.warnings.push(...loadValidationErrors);
+      recommendation.warnings.push(...equipmentValidationErrors);
       recommendations.push(recommendation);
     }
   }

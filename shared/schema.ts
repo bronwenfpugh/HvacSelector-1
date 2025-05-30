@@ -45,7 +45,7 @@ export const equipment = pgTable("equipment", {
   imageUrl: text("image_url").notNull(),
 });
 
-// Load calculation inputs
+// Load calculation inputs with cross-validation
 export const loadInputsSchema = z.object({
   totalHeatingBtu: z.number().min(0).max(500000),
   totalCoolingBtu: z.number().min(0).max(500000),
@@ -54,7 +54,46 @@ export const loadInputsSchema = z.object({
   outdoorWinterDesignTemp: z.number().min(-30).max(150).optional(),
   elevation: z.number().min(-3000).max(30000).optional(),
   indoorHumidity: z.number().min(0).max(100).optional(),
-});
+}).refine(
+  (data) => data.sensibleCoolingBtu <= data.totalCoolingBtu,
+  {
+    message: "Sensible cooling load cannot exceed total cooling load",
+    path: ["sensibleCoolingBtu"],
+  }
+).refine(
+  (data) => {
+    if (data.totalCoolingBtu > 0) {
+      const shr = data.sensibleCoolingBtu / data.totalCoolingBtu;
+      return shr >= 0.65 && shr <= 1.0;
+    }
+    return true;
+  },
+  {
+    message: "Sensible heat ratio must be between 0.65 and 1.0 for cooling loads",
+    path: ["sensibleCoolingBtu"],
+  }
+).refine(
+  (data) => {
+    // Require heating or cooling load to be greater than zero
+    return data.totalHeatingBtu > 0 || data.totalCoolingBtu > 0;
+  },
+  {
+    message: "At least one load (heating or cooling) must be greater than zero",
+    path: ["totalHeatingBtu"],
+  }
+).refine(
+  (data) => {
+    // If design temperatures are provided, winter should be less than summer
+    if (data.outdoorWinterDesignTemp && data.outdoorSummerDesignTemp) {
+      return data.outdoorWinterDesignTemp < data.outdoorSummerDesignTemp;
+    }
+    return true;
+  },
+  {
+    message: "Winter design temperature must be less than summer design temperature",
+    path: ["outdoorWinterDesignTemp"],
+  }
+);
 
 // User preferences
 export const userPreferencesSchema = z.object({

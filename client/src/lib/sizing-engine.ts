@@ -457,7 +457,7 @@ function evaluateComboSystem(
       seer: equipment.seer!,
       hspf: null,
       imageUrl: equipment.imageUrl,
-    },
+    } as const,
     sizingStatus,
     sizingPercentage: avgPercentage,
     backupHeatRequired: undefined,

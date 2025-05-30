@@ -195,6 +195,70 @@ export const equipmentRecommendationSchema = z.object({
   recommendedCfm: z.number().optional(),
 });
 
+// Strict equipment type definitions for compile-time safety
+export type FurnaceEquipment = {
+  equipmentType: 'furnace';
+  nominalTons: null;
+  nominalBtu: number;
+  heatingCapacityBtu: number;
+  coolingCapacityBtu: null;
+  latentCoolingBtu: null;
+  afue: number;
+  seer: null;
+  hspf: null;
+} & Omit<typeof equipment.$inferSelect, 'equipmentType' | 'nominalTons' | 'nominalBtu' | 'heatingCapacityBtu' | 'coolingCapacityBtu' | 'latentCoolingBtu' | 'afue' | 'seer' | 'hspf'>;
+
+export type AcEquipment = {
+  equipmentType: 'ac';
+  nominalTons: number;
+  nominalBtu: null;
+  heatingCapacityBtu: null;
+  coolingCapacityBtu: number;
+  latentCoolingBtu: number;
+  afue: null;
+  seer: number;
+  hspf: null;
+} & Omit<typeof equipment.$inferSelect, 'equipmentType' | 'nominalTons' | 'nominalBtu' | 'heatingCapacityBtu' | 'coolingCapacityBtu' | 'latentCoolingBtu' | 'afue' | 'seer' | 'hspf'>;
+
+export type HeatPumpEquipment = {
+  equipmentType: 'heat_pump';
+  nominalTons: number;
+  nominalBtu: null;
+  heatingCapacityBtu: number;
+  coolingCapacityBtu: number;
+  latentCoolingBtu: number;
+  afue: null;
+  seer: number;
+  hspf: number;
+} & Omit<typeof equipment.$inferSelect, 'equipmentType' | 'nominalTons' | 'nominalBtu' | 'heatingCapacityBtu' | 'coolingCapacityBtu' | 'latentCoolingBtu' | 'afue' | 'seer' | 'hspf'>;
+
+export type BoilerEquipment = {
+  equipmentType: 'boiler';
+  nominalTons: null;
+  nominalBtu: number;
+  heatingCapacityBtu: number;
+  coolingCapacityBtu: null;
+  latentCoolingBtu: null;
+  afue: number;
+  seer: null;
+  hspf: null;
+} & Omit<typeof equipment.$inferSelect, 'equipmentType' | 'nominalTons' | 'nominalBtu' | 'heatingCapacityBtu' | 'coolingCapacityBtu' | 'latentCoolingBtu' | 'afue' | 'seer' | 'hspf'>;
+
+export type ComboEquipment = {
+  equipmentType: 'furnace_ac_combo';
+  nominalTons: number;
+  nominalBtu: number;
+  heatingCapacityBtu: number;
+  coolingCapacityBtu: number;
+  latentCoolingBtu: number;
+  afue: number;
+  seer: number;
+  hspf: null;
+} & Omit<typeof equipment.$inferSelect, 'equipmentType' | 'nominalTons' | 'nominalBtu' | 'heatingCapacityBtu' | 'coolingCapacityBtu' | 'latentCoolingBtu' | 'afue' | 'seer' | 'hspf'>;
+
+// Discriminated union of all equipment types
+export type TypedEquipment = FurnaceEquipment | AcEquipment | HeatPumpEquipment | BoilerEquipment | ComboEquipment;
+
 export const insertEquipmentSchema = createInsertSchema(equipment);
 export type InsertEquipment = z.infer<typeof insertEquipmentSchema>;
 export type Equipment = typeof equipment.$inferSelect;

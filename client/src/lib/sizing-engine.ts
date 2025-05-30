@@ -1,4 +1,71 @@
-import type { LoadInputs, UserPreferences, Equipment, EquipmentRecommendation } from "@shared/schema";
+import type { LoadInputs, UserPreferences, Equipment, EquipmentRecommendation, TypedEquipment, FurnaceEquipment, AcEquipment, HeatPumpEquipment, BoilerEquipment, ComboEquipment } from "@shared/schema";
+
+// Type guard functions for compile-time safety
+export function isFurnace(equipment: Equipment): equipment is FurnaceEquipment {
+  return equipment.equipmentType === 'furnace' && 
+         equipment.nominalBtu !== null && 
+         equipment.heatingCapacityBtu !== null && 
+         equipment.afue !== null &&
+         equipment.nominalTons === null &&
+         equipment.coolingCapacityBtu === null &&
+         equipment.seer === null;
+}
+
+export function isAc(equipment: Equipment): equipment is AcEquipment {
+  return equipment.equipmentType === 'ac' &&
+         equipment.nominalTons !== null &&
+         equipment.coolingCapacityBtu !== null &&
+         equipment.latentCoolingBtu !== null &&
+         equipment.seer !== null &&
+         equipment.nominalBtu === null &&
+         equipment.heatingCapacityBtu === null &&
+         equipment.afue === null;
+}
+
+export function isHeatPump(equipment: Equipment): equipment is HeatPumpEquipment {
+  return equipment.equipmentType === 'heat_pump' &&
+         equipment.nominalTons !== null &&
+         equipment.heatingCapacityBtu !== null &&
+         equipment.coolingCapacityBtu !== null &&
+         equipment.latentCoolingBtu !== null &&
+         equipment.seer !== null &&
+         equipment.hspf !== null &&
+         equipment.nominalBtu === null &&
+         equipment.afue === null;
+}
+
+export function isBoiler(equipment: Equipment): equipment is BoilerEquipment {
+  return equipment.equipmentType === 'boiler' &&
+         equipment.nominalBtu !== null &&
+         equipment.heatingCapacityBtu !== null &&
+         equipment.afue !== null &&
+         equipment.nominalTons === null &&
+         equipment.coolingCapacityBtu === null &&
+         equipment.seer === null;
+}
+
+export function isCombo(equipment: Equipment): equipment is ComboEquipment {
+  return equipment.equipmentType === 'furnace_ac_combo' &&
+         equipment.nominalTons !== null &&
+         equipment.nominalBtu !== null &&
+         equipment.heatingCapacityBtu !== null &&
+         equipment.coolingCapacityBtu !== null &&
+         equipment.latentCoolingBtu !== null &&
+         equipment.afue !== null &&
+         equipment.seer !== null &&
+         equipment.hspf === null;
+}
+
+// Type-safe equipment validation
+function assertTypedEquipment(equipment: Equipment): TypedEquipment {
+  if (isFurnace(equipment)) return equipment;
+  if (isAc(equipment)) return equipment;
+  if (isHeatPump(equipment)) return equipment;
+  if (isBoiler(equipment)) return equipment;
+  if (isCombo(equipment)) return equipment;
+  
+  throw new Error(`Equipment ${equipment.id} does not match any valid type schema - missing required fields for ${equipment.equipmentType}`);
+}
 
 // Equipment-specific validation functions
 function validateEquipmentSpecs(equipment: Equipment): string[] {
@@ -221,15 +288,23 @@ export function calculateEquipmentRecommendations(
   );
 
   for (const equipment of filteredEquipment) {
-    // Validate equipment specifications
-    const equipmentValidationErrors = validateEquipmentSpecs(equipment);
-    
-    const recommendation = evaluateEquipment(equipment, loadInputs, preferences, shr, latentCooling);
-    if (recommendation) {
-      // Add validation warnings to the recommendation
-      recommendation.warnings.push(...loadValidationErrors);
-      recommendation.warnings.push(...equipmentValidationErrors);
-      recommendations.push(recommendation);
+    try {
+      // Assert equipment matches a valid typed schema
+      const typedEquipment = assertTypedEquipment(equipment);
+      
+      // Validate equipment specifications
+      const equipmentValidationErrors = validateEquipmentSpecs(equipment);
+      
+      const recommendation = evaluateTypedEquipment(typedEquipment, loadInputs, preferences, shr, latentCooling);
+      if (recommendation) {
+        // Add validation warnings to the recommendation
+        recommendation.warnings.push(...loadValidationErrors);
+        recommendation.warnings.push(...equipmentValidationErrors);
+        recommendations.push(recommendation);
+      }
+    } catch (error) {
+      // Skip equipment that doesn't match type schema - log for debugging
+      console.warn(`Skipping equipment ${equipment.id}: ${error instanceof Error ? error.message : 'Type validation failed'}`);
     }
   }
 
@@ -244,6 +319,45 @@ export function calculateEquipmentRecommendations(
   });
 
   return recommendations;
+}
+
+// Type-safe equipment evaluation with compile-time guarantees
+function evaluateTypedEquipment(
+  equipment: TypedEquipment,
+  loadInputs: LoadInputs,
+  preferences: UserPreferences,
+  shr: number,
+  latentCooling: number
+): EquipmentRecommendation | null {
+  const warnings: string[] = [];
+  const instructions: string[] = [];
+
+  // Apply equipment filters
+  if (!passesFilters(equipment, preferences)) {
+    return null;
+  }
+
+  switch (equipment.equipmentType) {
+    case 'furnace':
+      return evaluateFurnaceTyped(equipment, loadInputs, preferences, warnings, instructions);
+    
+    case 'ac':
+      return evaluateAirConditionerTyped(equipment, loadInputs, preferences, shr, warnings, instructions);
+    
+    case 'heat_pump':
+      return evaluateHeatPumpTyped(equipment, loadInputs, preferences, shr, latentCooling, warnings, instructions);
+    
+    case 'boiler':
+      return evaluateBoilerTyped(equipment, loadInputs, preferences, warnings, instructions);
+    
+    case 'furnace_ac_combo':
+      return evaluateComboSystemTyped(equipment, loadInputs, preferences, shr, latentCooling, warnings, instructions);
+    
+    default:
+      // TypeScript will catch if we miss any equipment types
+      const _exhaustiveCheck: never = equipment;
+      return null;
+  }
 }
 
 function evaluateEquipment(

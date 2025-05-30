@@ -1,5 +1,113 @@
 import type { LoadInputs, UserPreferences, Equipment, EquipmentRecommendation } from "@shared/schema";
 
+// Helper function to create properly typed equipment objects for recommendations
+function createEquipmentRecommendationObject(
+  equipment: Equipment,
+  equipmentType: Equipment['equipmentType']
+): EquipmentRecommendation['equipment'] {
+  const baseEquipment = {
+    id: equipment.id,
+    manufacturer: equipment.manufacturer,
+    model: equipment.model,
+    price: equipment.price,
+    distributionType: equipment.distributionType,
+    staging: equipment.staging,
+    imageUrl: equipment.imageUrl,
+  };
+
+  switch (equipmentType) {
+    case 'furnace':
+      if (!equipment.nominalBtu || !equipment.heatingCapacityBtu || !equipment.afue) {
+        throw new Error(`Furnace ${equipment.id} missing required fields: nominalBtu, heatingCapacityBtu, or afue`);
+      }
+      return {
+        ...baseEquipment,
+        equipmentType: 'furnace',
+        nominalTons: null,
+        nominalBtu: equipment.nominalBtu,
+        heatingCapacityBtu: equipment.heatingCapacityBtu,
+        coolingCapacityBtu: null,
+        latentCoolingBtu: null,
+        afue: equipment.afue,
+        seer: null,
+        hspf: null,
+      };
+
+    case 'ac':
+      if (!equipment.nominalTons || !equipment.coolingCapacityBtu || !equipment.latentCoolingBtu || !equipment.seer) {
+        throw new Error(`AC ${equipment.id} missing required fields: nominalTons, coolingCapacityBtu, latentCoolingBtu, or seer`);
+      }
+      return {
+        ...baseEquipment,
+        equipmentType: 'ac',
+        nominalTons: equipment.nominalTons,
+        nominalBtu: null,
+        heatingCapacityBtu: null,
+        coolingCapacityBtu: equipment.coolingCapacityBtu,
+        latentCoolingBtu: equipment.latentCoolingBtu,
+        afue: null,
+        seer: equipment.seer,
+        hspf: null,
+      };
+
+    case 'heat_pump':
+      if (!equipment.nominalTons || !equipment.heatingCapacityBtu || !equipment.coolingCapacityBtu || 
+          !equipment.latentCoolingBtu || !equipment.seer || !equipment.hspf) {
+        throw new Error(`Heat pump ${equipment.id} missing required fields: nominalTons, heatingCapacityBtu, coolingCapacityBtu, latentCoolingBtu, seer, or hspf`);
+      }
+      return {
+        ...baseEquipment,
+        equipmentType: 'heat_pump',
+        nominalTons: equipment.nominalTons,
+        nominalBtu: null,
+        heatingCapacityBtu: equipment.heatingCapacityBtu,
+        coolingCapacityBtu: equipment.coolingCapacityBtu,
+        latentCoolingBtu: equipment.latentCoolingBtu,
+        afue: null,
+        seer: equipment.seer,
+        hspf: equipment.hspf,
+      };
+
+    case 'boiler':
+      if (!equipment.nominalBtu || !equipment.heatingCapacityBtu || !equipment.afue) {
+        throw new Error(`Boiler ${equipment.id} missing required fields: nominalBtu, heatingCapacityBtu, or afue`);
+      }
+      return {
+        ...baseEquipment,
+        equipmentType: 'boiler',
+        nominalTons: null,
+        nominalBtu: equipment.nominalBtu,
+        heatingCapacityBtu: equipment.heatingCapacityBtu,
+        coolingCapacityBtu: null,
+        latentCoolingBtu: null,
+        afue: equipment.afue,
+        seer: null,
+        hspf: null,
+      };
+
+    case 'furnace_ac_combo':
+      if (!equipment.nominalTons || !equipment.nominalBtu || !equipment.heatingCapacityBtu || 
+          !equipment.coolingCapacityBtu || !equipment.latentCoolingBtu || !equipment.afue || !equipment.seer) {
+        throw new Error(`Combo system ${equipment.id} missing required fields: nominalTons, nominalBtu, heatingCapacityBtu, coolingCapacityBtu, latentCoolingBtu, afue, or seer`);
+      }
+      return {
+        ...baseEquipment,
+        equipmentType: 'furnace_ac_combo',
+        nominalTons: equipment.nominalTons,
+        nominalBtu: equipment.nominalBtu,
+        heatingCapacityBtu: equipment.heatingCapacityBtu,
+        coolingCapacityBtu: equipment.coolingCapacityBtu,
+        latentCoolingBtu: equipment.latentCoolingBtu,
+        afue: equipment.afue,
+        seer: equipment.seer,
+        hspf: null,
+      };
+
+    default:
+      throw new Error(`Unsupported equipment type: ${equipmentType}`);
+  }
+}
+
 export function calculateEquipmentRecommendations(
   loadInputs: LoadInputs,
   preferences: UserPreferences,
@@ -140,24 +248,7 @@ function evaluateFurnace(
   instructions.push("Check static pressure requirements for optimal performance");
 
   return {
-    equipment: {
-      id: equipment.id,
-      manufacturer: equipment.manufacturer,
-      model: equipment.model,
-      price: equipment.price,
-      equipmentType: 'furnace',
-      distributionType: equipment.distributionType,
-      staging: equipment.staging,
-      nominalTons: null,
-      nominalBtu: equipment.nominalBtu!,
-      heatingCapacityBtu: equipment.heatingCapacityBtu,
-      coolingCapacityBtu: null,
-      latentCoolingBtu: null,
-      afue: equipment.afue!,
-      seer: null,
-      hspf: null,
-      imageUrl: equipment.imageUrl,
-    },
+    equipment: createEquipmentRecommendationObject(equipment, 'furnace'),
     sizingStatus,
     sizingPercentage,
     warnings,
@@ -203,24 +294,7 @@ function evaluateAirConditioner(
   }
 
   return {
-    equipment: {
-      id: equipment.id,
-      manufacturer: equipment.manufacturer,
-      model: equipment.model,
-      price: equipment.price,
-      equipmentType: 'ac',
-      distributionType: equipment.distributionType,
-      staging: equipment.staging,
-      nominalTons: equipment.nominalTons!,
-      nominalBtu: null,
-      heatingCapacityBtu: null,
-      coolingCapacityBtu: equipment.coolingCapacityBtu,
-      latentCoolingBtu: equipment.latentCoolingBtu!,
-      afue: null,
-      seer: equipment.seer!,
-      hspf: null,
-      imageUrl: equipment.imageUrl,
-    },
+    equipment: createEquipmentRecommendationObject(equipment, 'ac'),
     sizingStatus,
     sizingPercentage,
     warnings,
@@ -314,24 +388,7 @@ function evaluateHeatPump(
   instructions.push(`Verify existing ductwork is capable of handling at least ${recommendedCfm.toLocaleString()} CFM`);
 
   return {
-    equipment: {
-      id: equipment.id,
-      manufacturer: equipment.manufacturer,
-      model: equipment.model,
-      price: equipment.price,
-      equipmentType: 'heat_pump',
-      distributionType: equipment.distributionType,
-      staging: equipment.staging,
-      nominalTons: equipment.nominalTons!,
-      nominalBtu: null,
-      heatingCapacityBtu: equipment.heatingCapacityBtu!,
-      coolingCapacityBtu: equipment.coolingCapacityBtu!,
-      latentCoolingBtu: equipment.latentCoolingBtu!,
-      afue: null,
-      seer: equipment.seer!,
-      hspf: equipment.hspf!,
-      imageUrl: equipment.imageUrl,
-    },
+    equipment: createEquipmentRecommendationObject(equipment, 'heat_pump'),
     sizingStatus,
     sizingPercentage,
     warnings,
@@ -373,24 +430,7 @@ function evaluateBoiler(
   }
 
   return {
-    equipment: {
-      id: equipment.id,
-      manufacturer: equipment.manufacturer,
-      model: equipment.model,
-      price: equipment.price,
-      equipmentType: 'boiler',
-      distributionType: equipment.distributionType,
-      staging: equipment.staging,
-      nominalTons: null,
-      nominalBtu: equipment.nominalBtu!,
-      heatingCapacityBtu: equipment.heatingCapacityBtu,
-      coolingCapacityBtu: null,
-      latentCoolingBtu: null,
-      afue: equipment.afue!,
-      seer: null,
-      hspf: null,
-      imageUrl: equipment.imageUrl,
-    },
+    equipment: createEquipmentRecommendationObject(equipment, 'boiler'),
     sizingStatus,
     sizingPercentage,
     backupHeatRequired: undefined,
@@ -440,24 +480,7 @@ function evaluateComboSystem(
   instructions.push('Consider zoning controls if heating and cooling loads vary significantly by area');
 
   return {
-    equipment: {
-      id: equipment.id,
-      manufacturer: equipment.manufacturer,
-      model: equipment.model,
-      price: equipment.price,
-      equipmentType: 'furnace_ac_combo',
-      distributionType: equipment.distributionType,
-      staging: equipment.staging,
-      nominalTons: equipment.nominalTons!,
-      nominalBtu: equipment.nominalBtu!,
-      heatingCapacityBtu: equipment.heatingCapacityBtu!,
-      coolingCapacityBtu: equipment.coolingCapacityBtu!,
-      latentCoolingBtu: equipment.latentCoolingBtu!,
-      afue: equipment.afue!,
-      seer: equipment.seer!,
-      hspf: null,
-      imageUrl: equipment.imageUrl,
-    } as const,
+    equipment: createEquipmentRecommendationObject(equipment, 'furnace_ac_combo'),
     sizingStatus,
     sizingPercentage: avgPercentage,
     backupHeatRequired: undefined,

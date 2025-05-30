@@ -28,10 +28,10 @@ export default function LoadInputForm({
   isCalculating
 }: LoadInputFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
+  const [showFilters, setShowFilters] = useState<boolean>(false);
   const [latentCooling, setLatentCooling] = useState(0);
   const [shr, setShr] = useState(0);
-  const [showAdvanced, setShowAdvanced] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
 
   // Calculate derived values
   useEffect(() => {
@@ -466,8 +466,8 @@ export default function LoadInputForm({
                   min="70"
                   max="98"
                   step="1"
-                  value={preferences.minAfue ? Math.round(preferences.minAfue * 100) : ""}
-                  onChange={(e) => handleMinAfueChange((parseFloat(e.target.value) || 0) / 100)}
+                  value={preferences.minAfue ? Math.round(preferences.minAfue * 100).toString() : ""}
+                  onChange={(e) => handleMinAfueChange(e.target.value)}
                   className="mt-2"
                 />
               </div>

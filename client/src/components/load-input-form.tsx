@@ -96,14 +96,14 @@ export default function LoadInputForm({
   const handleDistributionTypeChange = (value: string) => {
     onPreferencesChange({
       ...preferences,
-      distributionType: value as 'ducted' | 'ductless' | 'hydronic'
+      distributionType: value === 'any' ? undefined : value as 'ducted' | 'ductless' | 'hydronic'
     });
   };
 
-  const handleBrandFilterChange = (brands: string[]) => {
+  const handleBrandFilterChange = (value: string) => {
     onPreferencesChange({
       ...preferences,
-      brandFilter: brands.length > 0 ? brands : undefined
+      brandFilter: value === 'any' ? undefined : [value]
     });
   };
 
@@ -400,7 +400,7 @@ export default function LoadInputForm({
                   <SelectValue placeholder="Any distribution type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Any distribution type</SelectItem>
+                  <SelectItem value="any">Any distribution type</SelectItem>
                   <SelectItem value="ducted">Ducted</SelectItem>
                   <SelectItem value="ductless">Ductless</SelectItem>
                   <SelectItem value="hydronic">Hydronic</SelectItem>
@@ -412,14 +412,14 @@ export default function LoadInputForm({
             <div>
               <Label className="text-sm font-medium text-carbon">Brand Filter</Label>
               <Select
-                value={preferences.brandFilter?.[0] || ""}
-                onValueChange={(value) => handleBrandFilterChange(value ? [value] : [])}
+                value={preferences.brandFilter?.[0] || "any"}
+                onValueChange={handleBrandFilterChange}
               >
                 <SelectTrigger className="mt-2">
                   <SelectValue placeholder="Any brand" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Any brand</SelectItem>
+                  <SelectItem value="any">Any brand</SelectItem>
                   <SelectItem value="Carrier">Carrier</SelectItem>
                   <SelectItem value="Trane">Trane</SelectItem>
                   <SelectItem value="Lennox">Lennox</SelectItem>

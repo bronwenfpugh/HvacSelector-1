@@ -67,26 +67,87 @@ export const userPreferencesSchema = z.object({
   maxPrice: z.number().optional(),
 });
 
-// Equipment recommendation result
+// Equipment recommendation result with equipment-type-specific validation
+const baseEquipmentSchema = z.object({
+  id: z.string(),
+  manufacturer: z.string(),
+  model: z.string(),
+  price: z.number(),
+  distributionType: z.enum(['ducted', 'ductless', 'hydronic']),
+  staging: z.enum(['single_stage', 'two_stage', 'variable_speed']),
+  imageUrl: z.string(),
+});
+
+const furnaceEquipmentSchema = baseEquipmentSchema.extend({
+  equipmentType: z.literal('furnace'),
+  nominalTons: z.null(),
+  nominalBtu: z.number(),
+  heatingCapacityBtu: z.number(),
+  coolingCapacityBtu: z.null(),
+  latentCoolingBtu: z.null(),
+  afue: z.number(),
+  seer: z.null(),
+  hspf: z.null(),
+});
+
+const acEquipmentSchema = baseEquipmentSchema.extend({
+  equipmentType: z.literal('ac'),
+  nominalTons: z.number(),
+  nominalBtu: z.null(),
+  heatingCapacityBtu: z.null(),
+  coolingCapacityBtu: z.number(),
+  latentCoolingBtu: z.number(),
+  afue: z.null(),
+  seer: z.number(),
+  hspf: z.null(),
+});
+
+const heatPumpEquipmentSchema = baseEquipmentSchema.extend({
+  equipmentType: z.literal('heat_pump'),
+  nominalTons: z.number(),
+  nominalBtu: z.null(),
+  heatingCapacityBtu: z.number(),
+  coolingCapacityBtu: z.number(),
+  latentCoolingBtu: z.number(),
+  afue: z.null(),
+  seer: z.number(),
+  hspf: z.number(),
+});
+
+const boilerEquipmentSchema = baseEquipmentSchema.extend({
+  equipmentType: z.literal('boiler'),
+  nominalTons: z.null(),
+  nominalBtu: z.number(),
+  heatingCapacityBtu: z.number(),
+  coolingCapacityBtu: z.null(),
+  latentCoolingBtu: z.null(),
+  afue: z.number(),
+  seer: z.null(),
+  hspf: z.null(),
+});
+
+const comboEquipmentSchema = baseEquipmentSchema.extend({
+  equipmentType: z.literal('furnace_ac_combo'),
+  nominalTons: z.number(),
+  nominalBtu: z.number(),
+  heatingCapacityBtu: z.number(),
+  coolingCapacityBtu: z.number(),
+  latentCoolingBtu: z.number(),
+  afue: z.number(),
+  seer: z.number(),
+  hspf: z.null(),
+});
+
+const equipmentRecommendationEquipmentSchema = z.discriminatedUnion('equipmentType', [
+  furnaceEquipmentSchema,
+  acEquipmentSchema,
+  heatPumpEquipmentSchema,
+  boilerEquipmentSchema,
+  comboEquipmentSchema,
+]);
+
 export const equipmentRecommendationSchema = z.object({
-  equipment: z.object({
-    id: z.string(),
-    manufacturer: z.string(),
-    model: z.string(),
-    price: z.number(),
-    equipmentType: z.enum(['furnace', 'ac', 'heat_pump', 'boiler', 'furnace_ac_combo']),
-    distributionType: z.enum(['ducted', 'ductless', 'hydronic']),
-    staging: z.enum(['single_stage', 'two_stage', 'variable_speed']),
-    nominalTons: z.number().nullable(),
-    nominalBtu: z.number().nullable(),
-    heatingCapacityBtu: z.number().nullable(),
-    coolingCapacityBtu: z.number().nullable(),
-    latentCoolingBtu: z.number().nullable(),
-    afue: z.number().nullable(),
-    seer: z.number().nullable(),
-    hspf: z.number().nullable(),
-    imageUrl: z.string(),
-  }),
+  equipment: equipmentRecommendationEquipmentSchema,
   sizingStatus: z.enum(['optimal', 'acceptable', 'oversized', 'undersized']),
   sizingPercentage: z.number(),
   warnings: z.array(z.string()),

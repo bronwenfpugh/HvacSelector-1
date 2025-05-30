@@ -81,6 +81,7 @@ export const equipmentRecommendationSchema = z.object({
     nominalBtu: z.number().nullable(),
     heatingCapacityBtu: z.number().nullable(),
     coolingCapacityBtu: z.number().nullable(),
+    latentCoolingBtu: z.number().nullable(),
     afue: z.number().nullable(),
     seer: z.number().nullable(),
     hspf: z.number().nullable(),

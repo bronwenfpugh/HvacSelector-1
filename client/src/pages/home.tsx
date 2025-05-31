@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Settings } from "lucide-react";
 import LoadInputForm from "@/components/load-input-form";
 import EquipmentResults from "@/components/equipment-results";
-import type { LoadInputs, UserPreferences, EquipmentRecommendation } from "@shared/schema";
+import ValidationSummaryComponent from "@/components/validation-summary";
+import type { LoadInputs, UserPreferences, EquipmentRecommendation, ValidationSummary } from "@shared/schema";
 
 export default function Home() {
   const [loadInputs, setLoadInputs] = useState<LoadInputs>({
@@ -17,6 +18,7 @@ export default function Home() {
   });
 
   const [recommendations, setRecommendations] = useState<EquipmentRecommendation[]>([]);
+  const [validationSummary, setValidationSummary] = useState<ValidationSummary | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
 
   const handleCalculate = async (inputs: LoadInputs, prefs: UserPreferences) => {
@@ -34,9 +36,11 @@ export default function Home() {
 
       const data = await response.json();
       setRecommendations(data.recommendations);
+      setValidationSummary(data.validationSummary);
     } catch (error) {
       console.error('Error calculating recommendations:', error);
       setRecommendations([]);
+      setValidationSummary(null);
     } finally {
       setIsCalculating(false);
     }
@@ -73,6 +77,9 @@ export default function Home() {
 
           {/* Results Area */}
           <div className="lg:col-span-2">
+            {validationSummary && (
+              <ValidationSummaryComponent validationSummary={validationSummary} />
+            )}
             <EquipmentResults
               recommendations={recommendations}
               isLoading={isCalculating}

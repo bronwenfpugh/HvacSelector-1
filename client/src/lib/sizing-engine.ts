@@ -215,7 +215,7 @@ function validateLoadInputs(loadInputs: LoadInputs): string[] {
 function createEquipmentRecommendationObject(
   equipment: Equipment,
   equipmentType: Equipment['equipmentType']
-): EquipmentRecommendation['equipment'] {
+): TypedEquipment {
   const baseEquipment = {
     id: equipment.id,
     manufacturer: equipment.manufacturer,

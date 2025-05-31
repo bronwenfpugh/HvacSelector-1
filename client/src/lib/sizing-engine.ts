@@ -56,15 +56,49 @@ export function isCombo(equipment: Equipment): equipment is ComboEquipment {
          equipment.hspf === null;
 }
 
-// Type-safe equipment validation
+// Data normalization function to ensure consistency
+function normalizeEquipmentData(equipment: Equipment): Equipment {
+  return {
+    ...equipment,
+    // Normalize null/undefined values based on equipment type
+    nominalTons: equipment.equipmentType === 'furnace' || equipment.equipmentType === 'boiler' 
+      ? null 
+      : equipment.nominalTons ?? null,
+    nominalBtu: equipment.equipmentType === 'ac' 
+      ? null 
+      : equipment.nominalBtu ?? null,
+    heatingCapacityBtu: equipment.equipmentType === 'ac' 
+      ? null 
+      : equipment.heatingCapacityBtu ?? null,
+    coolingCapacityBtu: equipment.equipmentType === 'furnace' || equipment.equipmentType === 'boiler' 
+      ? null 
+      : equipment.coolingCapacityBtu ?? null,
+    latentCoolingBtu: equipment.equipmentType === 'furnace' || equipment.equipmentType === 'boiler' 
+      ? null 
+      : equipment.latentCoolingBtu ?? null,
+    afue: equipment.equipmentType === 'ac' || equipment.equipmentType === 'heat_pump' 
+      ? null 
+      : equipment.afue ?? null,
+    seer: equipment.equipmentType === 'furnace' || equipment.equipmentType === 'boiler' 
+      ? null 
+      : equipment.seer ?? null,
+    hspf: equipment.equipmentType !== 'heat_pump' 
+      ? null 
+      : equipment.hspf ?? null,
+  };
+}
+
+// Type-safe equipment validation with normalized data
 function assertTypedEquipment(equipment: Equipment): TypedEquipment {
-  if (isFurnace(equipment)) return equipment;
-  if (isAc(equipment)) return equipment;
-  if (isHeatPump(equipment)) return equipment;
-  if (isBoiler(equipment)) return equipment;
-  if (isCombo(equipment)) return equipment;
+  const normalized = normalizeEquipmentData(equipment);
   
-  throw new Error(`Equipment ${equipment.id} does not match any valid type schema - missing required fields for ${equipment.equipmentType}`);
+  if (isFurnace(normalized)) return normalized;
+  if (isAc(normalized)) return normalized;
+  if (isHeatPump(normalized)) return normalized;
+  if (isBoiler(normalized)) return normalized;
+  if (isCombo(normalized)) return normalized;
+  
+  throw new Error(`Equipment ${equipment.id} does not match any valid type schema after normalization - missing required fields for ${equipment.equipmentType}`);
 }
 
 // Equipment-specific validation functions

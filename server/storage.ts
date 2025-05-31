@@ -1,10 +1,10 @@
 import { equipmentDatabase } from "../client/src/lib/equipment-data";
 import { calculateEquipmentRecommendations } from "../client/src/lib/sizing-engine";
-import type { Equipment, LoadInputs, UserPreferences, EquipmentRecommendation } from "@shared/schema";
+import type { Equipment, LoadInputs, UserPreferences, EquipmentCalculationResult } from "@shared/schema";
 
 export interface IStorage {
   getAllEquipment(): Promise<Equipment[]>;
-  calculateRecommendations(loadInputs: LoadInputs, preferences: UserPreferences): Promise<EquipmentRecommendation[]>;
+  calculateRecommendations(loadInputs: LoadInputs, preferences: UserPreferences): Promise<EquipmentCalculationResult>;
 }
 
 export class MemStorage implements IStorage {
@@ -21,17 +21,17 @@ export class MemStorage implements IStorage {
   async calculateRecommendations(
     loadInputs: LoadInputs, 
     preferences: UserPreferences
-  ): Promise<EquipmentRecommendation[]> {
+  ): Promise<EquipmentCalculationResult> {
     const activeEquipment = this.equipment.filter(eq => eq.isActive);
     
-    // Use the sizing engine to calculate recommendations
-    const recommendations = calculateEquipmentRecommendations(
+    // Use the sizing engine to calculate recommendations with validation summary
+    const result = calculateEquipmentRecommendations(
       loadInputs,
       preferences,
       activeEquipment
     );
 
-    return recommendations;
+    return result;
   }
 }
 

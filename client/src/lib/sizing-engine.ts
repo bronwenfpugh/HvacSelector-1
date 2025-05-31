@@ -1,4 +1,4 @@
-import type { LoadInputs, UserPreferences, Equipment, EquipmentRecommendation, TypedEquipment, FurnaceEquipment, AcEquipment, HeatPumpEquipment, BoilerEquipment, ComboEquipment } from "@shared/schema";
+import type { LoadInputs, UserPreferences, Equipment, EquipmentRecommendation, TypedEquipment, FurnaceEquipment, AcEquipment, HeatPumpEquipment, BoilerEquipment, ComboEquipment, EquipmentValidationError, ValidationSummary, EquipmentCalculationResult } from "@shared/schema";
 
 // Type guard functions for compile-time safety
 export function isFurnace(equipment: Equipment): equipment is FurnaceEquipment {
@@ -88,17 +88,34 @@ function normalizeEquipmentData(equipment: Equipment): Equipment {
   };
 }
 
-// Type-safe equipment validation with normalized data
-function assertTypedEquipment(equipment: Equipment): TypedEquipment {
+// Equipment validation with error collection
+interface EquipmentValidationResult {
+  equipment?: TypedEquipment;
+  error?: EquipmentValidationError;
+}
+
+function validateTypedEquipment(equipment: Equipment): EquipmentValidationResult {
   const normalized = normalizeEquipmentData(equipment);
   
-  if (isFurnace(normalized)) return normalized;
-  if (isAc(normalized)) return normalized;
-  if (isHeatPump(normalized)) return normalized;
-  if (isBoiler(normalized)) return normalized;
-  if (isCombo(normalized)) return normalized;
+  // Try type validation
+  if (isFurnace(normalized)) return { equipment: normalized };
+  if (isAc(normalized)) return { equipment: normalized };
+  if (isHeatPump(normalized)) return { equipment: normalized };
+  if (isBoiler(normalized)) return { equipment: normalized };
+  if (isCombo(normalized)) return { equipment: normalized };
   
-  throw new Error(`Equipment ${equipment.id} does not match any valid type schema after normalization - missing required fields for ${equipment.equipmentType}`);
+  // Create detailed error for failed validation
+  return {
+    error: {
+      equipmentId: equipment.id,
+      manufacturer: equipment.manufacturer,
+      model: equipment.model,
+      errorType: 'type_validation',
+      severity: 'critical',
+      message: `Equipment does not match ${equipment.equipmentType} requirements`,
+      technicalDetails: `Missing required fields for ${equipment.equipmentType} type validation`
+    }
+  };
 }
 
 // Equipment-specific validation functions
@@ -306,8 +323,9 @@ export function calculateEquipmentRecommendations(
   loadInputs: LoadInputs,
   preferences: UserPreferences,
   equipmentList: Equipment[]
-): EquipmentRecommendation[] {
+): EquipmentCalculationResult {
   const recommendations: EquipmentRecommendation[] = [];
+  const validationErrors: EquipmentValidationError[] = [];
   
   // Validate load inputs and add warnings to all recommendations
   const loadValidationErrors = validateLoadInputs(loadInputs);
@@ -322,23 +340,38 @@ export function calculateEquipmentRecommendations(
   );
 
   for (const equipment of filteredEquipment) {
-    try {
-      // Assert equipment matches a valid typed schema
-      const typedEquipment = assertTypedEquipment(equipment);
-      
+    // Validate equipment with error collection
+    const validationResult = validateTypedEquipment(equipment);
+    
+    if (validationResult.error) {
+      validationErrors.push(validationResult.error);
+      continue;
+    }
+    
+    if (validationResult.equipment) {
       // Validate equipment specifications
       const equipmentValidationErrors = validateEquipmentSpecs(equipment);
       
-      const recommendation = evaluateEquipment(typedEquipment, loadInputs, preferences, shr, latentCooling);
+      // Add spec validation errors to collection
+      if (equipmentValidationErrors.length > 0) {
+        validationErrors.push({
+          equipmentId: equipment.id,
+          manufacturer: equipment.manufacturer,
+          model: equipment.model,
+          errorType: 'spec_validation',
+          severity: 'warning',
+          message: `Equipment has ${equipmentValidationErrors.length} specification warning(s)`,
+          technicalDetails: equipmentValidationErrors.join('; ')
+        });
+      }
+      
+      const recommendation = evaluateEquipment(validationResult.equipment, loadInputs, preferences, shr, latentCooling);
       if (recommendation) {
         // Add validation warnings to the recommendation
         recommendation.warnings.push(...loadValidationErrors);
         recommendation.warnings.push(...equipmentValidationErrors);
         recommendations.push(recommendation);
       }
-    } catch (error) {
-      // Skip equipment that doesn't match type schema - log for debugging
-      console.warn(`Skipping equipment ${equipment.id}: ${error instanceof Error ? error.message : 'Type validation failed'}`);
     }
   }
 
@@ -352,7 +385,18 @@ export function calculateEquipmentRecommendations(
     return Math.abs(a.sizingPercentage - 100) - Math.abs(b.sizingPercentage - 100);
   });
 
-  return recommendations;
+  // Create validation summary
+  const validationSummary: ValidationSummary = {
+    totalEquipment: filteredEquipment.length,
+    includedEquipment: recommendations.length,
+    excludedEquipment: filteredEquipment.length - recommendations.length,
+    errors: validationErrors
+  };
+
+  return {
+    recommendations,
+    validationSummary
+  };
 }
 
 

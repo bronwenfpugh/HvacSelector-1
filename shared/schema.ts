@@ -265,3 +265,26 @@ export type Equipment = typeof equipment.$inferSelect;
 export type LoadInputs = z.infer<typeof loadInputsSchema>;
 export type UserPreferences = z.infer<typeof userPreferencesSchema>;
 export type EquipmentRecommendation = z.infer<typeof equipmentRecommendationSchema>;
+
+// Equipment validation result types
+export interface EquipmentValidationError {
+  equipmentId: string;
+  manufacturer: string;
+  model: string;
+  errorType: 'type_validation' | 'spec_validation' | 'data_inconsistency';
+  severity: 'critical' | 'warning' | 'info';
+  message: string;
+  technicalDetails?: string;
+}
+
+export interface ValidationSummary {
+  totalEquipment: number;
+  includedEquipment: number;
+  excludedEquipment: number;
+  errors: EquipmentValidationError[];
+}
+
+export interface EquipmentCalculationResult {
+  recommendations: EquipmentRecommendation[];
+  validationSummary: ValidationSummary;
+}

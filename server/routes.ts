@@ -15,9 +15,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { loadInputs, preferences } = calculateRequestSchema.parse(req.body);
       
-      const recommendations = await storage.calculateRecommendations(loadInputs, preferences);
+      const result = await storage.calculateRecommendations(loadInputs, preferences);
       
-      res.json({ recommendations });
+      res.json(result);
     } catch (error) {
       if (error instanceof z.ZodError) {
         // Transform Zod errors into user-friendly messages

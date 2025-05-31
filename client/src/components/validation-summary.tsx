@@ -1,5 +1,5 @@
 import { AlertTriangle, Info, XCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, createElement } from "react";
 import type { ValidationSummary } from "@shared/schema";
 
 interface ValidationSummaryProps {
@@ -9,7 +9,7 @@ interface ValidationSummaryProps {
 export default function ValidationSummaryComponent({ validationSummary }: ValidationSummaryProps) {
   const [showDetails, setShowDetails] = useState(false);
 
-  if (!validationSummary || validationSummary.errors.length === 0) {
+  if (!validationSummary) {
     return null;
   }
 
@@ -46,59 +46,80 @@ export default function ValidationSummaryComponent({ validationSummary }: Valida
     }
   };
 
+  const hasErrors = errors.length > 0;
+  const validationIcon = hasErrors ? AlertTriangle : Info;
+  const iconColor = hasErrors ? "text-warning-orange" : "text-success-green";
+
   return (
     <div className="bg-dust-3 border border-dust-1 rounded-lg p-4 mb-6">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center space-x-2">
-          <AlertTriangle className="h-5 w-5 text-warning-orange" />
+          {createElement(validationIcon, { className: `h-5 w-5 ${iconColor}` })}
           <h3 className="text-headline-5 font-semibold text-carbon">
-            Equipment Validation Summary
+            Equipment Processing Summary
           </h3>
         </div>
-        <button
-          onClick={() => setShowDetails(!showDetails)}
-          className="text-electric-purple hover:text-electric-purple/80 text-button-normal font-medium"
-        >
-          {showDetails ? 'Hide Details' : 'Show Details'}
-        </button>
+        {(hasErrors || totalEquipment > 0) && (
+          <button
+            onClick={() => setShowDetails(!showDetails)}
+            className="text-electric-purple hover:text-electric-purple/80 text-button-normal font-medium"
+          >
+            {showDetails ? 'Hide Details' : 'Show Details'}
+          </button>
+        )}
       </div>
 
       <div className="text-description-regular text-slate-1 mb-3">
-        {includedEquipment} of {totalEquipment} equipment items validated successfully.
-        {excludedEquipment > 0 && (
-          <span className="text-warning-orange font-medium">
-            {' '}{excludedEquipment} items excluded due to validation issues.
+        <div className="flex items-center space-x-4">
+          <span>
+            <span className="font-medium text-carbon">{includedEquipment}</span> of{' '}
+            <span className="font-medium text-carbon">{totalEquipment}</span> equipment items processed
           </span>
+          {!hasErrors && (
+            <span className="flex items-center space-x-1 text-success-green">
+              <span className="w-2 h-2 bg-success-green rounded-full"></span>
+              <span className="text-description-regular">All validated successfully</span>
+            </span>
+          )}
+        </div>
+        {excludedEquipment > 0 && (
+          <div className="mt-1">
+            <span className="text-warning-orange font-medium">
+              {excludedEquipment} items excluded due to validation issues
+            </span>
+          </div>
         )}
       </div>
 
-      {/* Summary counts */}
-      <div className="flex flex-wrap gap-4 mb-3">
-        {criticalErrors.length > 0 && (
-          <div className="flex items-center space-x-1">
-            <XCircle className="h-4 w-4 text-error-red" />
-            <span className="text-description-regular text-error-red">
-              {criticalErrors.length} critical issue{criticalErrors.length !== 1 ? 's' : ''}
-            </span>
-          </div>
-        )}
-        {warningErrors.length > 0 && (
-          <div className="flex items-center space-x-1">
-            <AlertTriangle className="h-4 w-4 text-warning-orange" />
-            <span className="text-description-regular text-warning-orange">
-              {warningErrors.length} warning{warningErrors.length !== 1 ? 's' : ''}
-            </span>
-          </div>
-        )}
-        {infoErrors.length > 0 && (
-          <div className="flex items-center space-x-1">
-            <Info className="h-4 w-4 text-slate-1" />
-            <span className="text-description-regular text-slate-1">
-              {infoErrors.length} info note{infoErrors.length !== 1 ? 's' : ''}
-            </span>
-          </div>
-        )}
-      </div>
+      {/* Summary counts - only show if there are errors */}
+      {hasErrors && (
+        <div className="flex flex-wrap gap-4 mb-3">
+          {criticalErrors.length > 0 && (
+            <div className="flex items-center space-x-1">
+              <XCircle className="h-4 w-4 text-error-red" />
+              <span className="text-description-regular text-error-red">
+                {criticalErrors.length} critical issue{criticalErrors.length !== 1 ? 's' : ''}
+              </span>
+            </div>
+          )}
+          {warningErrors.length > 0 && (
+            <div className="flex items-center space-x-1">
+              <AlertTriangle className="h-4 w-4 text-warning-orange" />
+              <span className="text-description-regular text-warning-orange">
+                {warningErrors.length} warning{warningErrors.length !== 1 ? 's' : ''}
+              </span>
+            </div>
+          )}
+          {infoErrors.length > 0 && (
+            <div className="flex items-center space-x-1">
+              <Info className="h-4 w-4 text-slate-1" />
+              <span className="text-description-regular text-slate-1">
+                {infoErrors.length} info note{infoErrors.length !== 1 ? 's' : ''}
+              </span>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Detailed error list */}
       {showDetails && (

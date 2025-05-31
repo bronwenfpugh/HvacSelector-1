@@ -77,7 +77,7 @@ export default function Home() {
 
           {/* Results Area */}
           <div className="lg:col-span-2">
-            {validationSummary && (
+            {validationSummary && validationSummary.totalEquipment > 0 && (
               <ValidationSummaryComponent validationSummary={validationSummary} />
             )}
             <EquipmentResults

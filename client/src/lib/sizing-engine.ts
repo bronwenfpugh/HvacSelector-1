@@ -321,44 +321,7 @@ export function calculateEquipmentRecommendations(
   return recommendations;
 }
 
-// Type-safe equipment evaluation with compile-time guarantees
-function evaluateTypedEquipment(
-  equipment: TypedEquipment,
-  loadInputs: LoadInputs,
-  preferences: UserPreferences,
-  shr: number,
-  latentCooling: number
-): EquipmentRecommendation | null {
-  const warnings: string[] = [];
-  const instructions: string[] = [];
 
-  // Apply equipment filters
-  if (!passesFilters(equipment, preferences)) {
-    return null;
-  }
-
-  switch (equipment.equipmentType) {
-    case 'furnace':
-      return evaluateFurnaceTyped(equipment, loadInputs, preferences, warnings, instructions);
-    
-    case 'ac':
-      return evaluateAirConditionerTyped(equipment, loadInputs, preferences, shr, warnings, instructions);
-    
-    case 'heat_pump':
-      return evaluateHeatPumpTyped(equipment, loadInputs, preferences, shr, latentCooling, warnings, instructions);
-    
-    case 'boiler':
-      return evaluateBoilerTyped(equipment, loadInputs, preferences, warnings, instructions);
-    
-    case 'furnace_ac_combo':
-      return evaluateComboSystemTyped(equipment, loadInputs, preferences, shr, latentCooling, warnings, instructions);
-    
-    default:
-      // TypeScript will catch if we miss any equipment types
-      const _exhaustiveCheck: never = equipment;
-      return null;
-  }
-}
 
 function evaluateEquipment(
   equipment: Equipment,
@@ -705,3 +668,233 @@ function evaluateComboSystem(
     instructions,
   };
 }
+
+// Type-safe evaluation functions with compile-time guarantees
+function evaluateFurnaceTyped(
+  equipment: FurnaceEquipment,
+  loadInputs: LoadInputs,
+  preferences: UserPreferences,
+  warnings: string[],
+  instructions: string[]
+): EquipmentRecommendation | null {
+  if (loadInputs.totalHeatingBtu === 0) return null;
+
+  const actualOutput = equipment.heatingCapacityBtu;
+  const sizingPercentage = Math.round((actualOutput / loadInputs.totalHeatingBtu) * 100);
+  let sizingStatus: 'optimal' | 'acceptable' | 'oversized' | 'undersized' = 'undersized';
+
+  if (sizingPercentage >= 100 && sizingPercentage <= 140) {
+    sizingStatus = 'optimal';
+  } else if (sizingPercentage >= 140 && sizingPercentage <= 200) {
+    sizingStatus = 'oversized';
+    warnings.push(`This furnace is ${sizingPercentage}% oversized. Use only if the AC system requires more blower power to accommodate the cooling load.`);
+  } else if (sizingPercentage < 100) {
+    return null;
+  } else {
+    return null;
+  }
+
+  instructions.push("Verify ductwork can handle required airflow");
+  instructions.push("Check static pressure requirements for optimal performance");
+
+  return {
+    equipment: createEquipmentRecommendationObject(equipment, 'furnace'),
+    sizingStatus,
+    sizingPercentage,
+    warnings,
+    instructions,
+  };
+}
+
+function evaluateAirConditionerTyped(
+  equipment: AcEquipment,
+  loadInputs: LoadInputs,
+  preferences: UserPreferences,
+  shr: number,
+  warnings: string[],
+  instructions: string[]
+): EquipmentRecommendation | null {
+  if (loadInputs.totalCoolingBtu === 0) return null;
+
+  const actualOutput = equipment.coolingCapacityBtu;
+  const sizingPercentage = Math.round((actualOutput / loadInputs.totalCoolingBtu) * 100);
+  let sizingStatus: 'optimal' | 'acceptable' | 'oversized' | 'undersized' = 'undersized';
+
+  if (sizingPercentage >= 95 && sizingPercentage <= 115) {
+    sizingStatus = 'optimal';
+  } else if (sizingPercentage >= 115 && sizingPercentage <= 125) {
+    sizingStatus = 'acceptable';
+    warnings.push(`This AC is ${sizingPercentage}% of the cooling load. Monitor for short cycling.`);
+  } else if (sizingPercentage > 125) {
+    sizingStatus = 'oversized';
+    warnings.push(`This AC is significantly oversized at ${sizingPercentage}% of load. Will cause short cycling and poor humidity control.`);
+  } else {
+    return null;
+  }
+
+  const tons = equipment.nominalTons;
+  const cfmPerTon = shr < 0.85 ? 350 : shr <= 0.95 ? 400 : 450;
+  const recommendedCfm = Math.ceil(tons * cfmPerTon);
+
+  instructions.push(`Verify existing ductwork is capable of handling at least ${recommendedCfm.toLocaleString()} CFM`);
+  if (shr < 0.95) {
+    instructions.push(`Use OEM data to verify system has adequate latent capacity`);
+  }
+
+  return {
+    equipment: createEquipmentRecommendationObject(equipment, 'ac'),
+    sizingStatus,
+    sizingPercentage,
+    warnings,
+    instructions,
+    recommendedCfm,
+  };
+}
+
+function evaluateHeatPumpTyped(
+  equipment: HeatPumpEquipment,
+  loadInputs: LoadInputs,
+  preferences: UserPreferences,
+  shr: number,
+  latentCooling: number,
+  warnings: string[],
+  instructions: string[]
+): EquipmentRecommendation | null {
+  if (loadInputs.totalCoolingBtu === 0 && loadInputs.totalHeatingBtu === 0) return null;
+
+  const coolingCapacity = equipment.coolingCapacityBtu;
+  const heatingCapacity = equipment.heatingCapacityBtu;
+  
+  let sizingStatus: 'optimal' | 'acceptable' | 'oversized' | 'undersized' = 'optimal';
+  let sizingPercentage = 100;
+  let backupHeatRequired: number | undefined;
+
+  if (preferences.sizingPreference === 'size_to_heating' && loadInputs.totalHeatingBtu > 0) {
+    sizingPercentage = Math.round((heatingCapacity / loadInputs.totalHeatingBtu) * 100);
+  } else if (loadInputs.totalCoolingBtu > 0) {
+    sizingPercentage = Math.round((coolingCapacity / loadInputs.totalCoolingBtu) * 100);
+  }
+
+  if (sizingPercentage >= 95 && sizingPercentage <= 115) {
+    sizingStatus = 'optimal';
+  } else if (sizingPercentage >= 115 && sizingPercentage <= 125) {
+    sizingStatus = 'acceptable';
+  } else if (sizingPercentage > 125) {
+    sizingStatus = 'oversized';
+  } else {
+    return null;
+  }
+
+  if (loadInputs.totalHeatingBtu > heatingCapacity) {
+    const backupNeeded = loadInputs.totalHeatingBtu - heatingCapacity;
+    backupHeatRequired = Math.ceil(backupNeeded / 3412);
+    warnings.push(`Requires ${backupHeatRequired} kW backup heat for design heating load`);
+  }
+
+  const tons = equipment.nominalTons;
+  const cfmPerTon = shr < 0.85 ? 350 : shr <= 0.95 ? 400 : 450;
+  const recommendedCfm = Math.ceil(tons * cfmPerTon);
+
+  instructions.push(`Verify existing ductwork is capable of handling at least ${recommendedCfm.toLocaleString()} CFM`);
+
+  return {
+    equipment: createEquipmentRecommendationObject(equipment, 'heat_pump'),
+    sizingStatus,
+    sizingPercentage,
+    warnings,
+    instructions,
+    backupHeatRequired,
+    recommendedCfm,
+  };
+}
+
+function evaluateBoilerTyped(
+  equipment: BoilerEquipment,
+  loadInputs: LoadInputs,
+  preferences: UserPreferences,
+  warnings: string[],
+  instructions: string[]
+): EquipmentRecommendation | null {
+  if (loadInputs.totalHeatingBtu === 0) return null;
+
+  const actualOutput = equipment.heatingCapacityBtu;
+  const sizingPercentage = Math.round((actualOutput / loadInputs.totalHeatingBtu) * 100);
+  let sizingStatus: 'optimal' | 'acceptable' | 'oversized' | 'undersized' = 'undersized';
+
+  if (sizingPercentage >= 100 && sizingPercentage <= 125) {
+    sizingStatus = 'optimal';
+  } else if (sizingPercentage >= 125 && sizingPercentage <= 150) {
+    sizingStatus = 'acceptable';
+    warnings.push(`This boiler is ${sizingPercentage}% of the heating load. Consider if oversizing is appropriate for pickup and recovery.`);
+  } else if (sizingPercentage > 150) {
+    sizingStatus = 'oversized';
+    warnings.push(`This boiler is significantly oversized at ${sizingPercentage}% of load. May cause short cycling and reduced efficiency.`);
+  } else {
+    return null;
+  }
+
+  if (equipment.distributionType === 'hydronic') {
+    instructions.push('Verify zone control and pump sizing for proper flow rates');
+    instructions.push('Consider boiler reset controls for optimal efficiency');
+  }
+
+  return {
+    equipment: createEquipmentRecommendationObject(equipment, 'boiler'),
+    sizingStatus,
+    sizingPercentage,
+    backupHeatRequired: undefined,
+    recommendedCfm: undefined,
+    warnings,
+    instructions,
+  };
+}
+
+function evaluateComboSystemTyped(
+  equipment: ComboEquipment,
+  loadInputs: LoadInputs,
+  preferences: UserPreferences,
+  shr: number,
+  latentCooling: number,
+  warnings: string[],
+  instructions: string[]
+): EquipmentRecommendation | null {
+  if (loadInputs.totalHeatingBtu === 0 && loadInputs.totalCoolingBtu === 0) return null;
+
+  const heatingPercentage = loadInputs.totalHeatingBtu > 0 
+    ? Math.round((equipment.heatingCapacityBtu / loadInputs.totalHeatingBtu) * 100)
+    : 100;
+  
+  const coolingPercentage = loadInputs.totalCoolingBtu > 0
+    ? Math.round((equipment.coolingCapacityBtu / loadInputs.totalCoolingBtu) * 100)
+    : 100;
+
+  if (heatingPercentage < 100 || coolingPercentage < 100) {
+    return null;
+  }
+
+  let sizingStatus: 'optimal' | 'acceptable' | 'oversized' | 'undersized' = 'optimal';
+  const avgPercentage = Math.round((heatingPercentage + coolingPercentage) / 2);
+
+  if (avgPercentage >= 100 && avgPercentage <= 115) {
+    sizingStatus = 'optimal';
+  } else if (avgPercentage >= 115 && avgPercentage <= 125) {
+    sizingStatus = 'acceptable';
+  } else if (avgPercentage > 125) {
+    sizingStatus = 'oversized';
+  }
+
+  instructions.push('Verify shared ductwork is sized for both heating and cooling airflow requirements');
+  instructions.push('Consider zoning controls if heating and cooling loads vary significantly by area');
+
+  return {
+    equipment: createEquipmentRecommendationObject(equipment, 'furnace_ac_combo'),
+    sizingStatus,
+    sizingPercentage: avgPercentage,
+    backupHeatRequired: undefined,
+    recommendedCfm: Math.round(equipment.coolingCapacityBtu / 12000 * 400),
+    warnings,
+    instructions,
+  };
+}
+
+

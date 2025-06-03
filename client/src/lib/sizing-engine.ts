@@ -581,6 +581,11 @@ function evaluateHeatPump(
   if (!equipment.coolingCapacityBtu || !equipment.heatingCapacityBtu) return null;
   if (loadInputs.totalCoolingBtu === 0 && loadInputs.totalHeatingBtu === 0) return null;
 
+  // Add cold climate warning for heat pumps
+  if (loadInputs.outdoorWinterDesignTemp !== undefined && loadInputs.outdoorWinterDesignTemp < 30) {
+    warnings.push(`Heat pumps lose capacity in colder weather. Use a cold climate heat pump. Verify the system's capacity at ${loadInputs.outdoorWinterDesignTemp}°F using performance data.`);
+  }
+
   const isHeatingDominant = loadInputs.totalHeatingBtu > loadInputs.totalCoolingBtu;
   const sizeToHeating = preferences.sizingPreference === 'size_to_heating';
   

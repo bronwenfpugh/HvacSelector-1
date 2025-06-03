@@ -1,0 +1,55 @@
+
+Implementation Plan: 50 SEER Maximum Limit
+1. Primary Change Location
+File: client/src/lib/sizing-engine.ts
+Function: validateEquipmentSpecs()
+
+Current State: Hard-coded SEER validation ranges (13-25) for AC, heat pump, and combo systems
+Required Change: Update upper limit from 25 to 50 for all equipment types with cooling capacity
+
+2. Affected Equipment Types
+Air Conditioners: Update from (13-25) to (13-50)
+Heat Pumps: Update from (13-25) to (13-50)
+Combo Systems: Update from (13-25) to (13-50)
+Furnaces/Boilers: No change needed (no SEER validation)
+3. Client-Side Impact Analysis
+Validation Logic (sizing-engine.ts)
+Direct Impact: Three case statements need SEER range updates
+Message Updates: Warning messages will automatically reflect new range
+Behavior Change: Equipment with SEER 26-50 will no longer trigger validation warnings
+User Interface (validation-summary.tsx)
+No Changes Required: Component dynamically displays validation messages
+Automatic Updates: New validation messages will appear correctly
+Display Logic: Existing error categorization and display will work unchanged
+Equipment Data (equipment-data.ts)
+Assessment Needed: Review if any existing equipment has SEER > 25
+Data Integrity: Ensure no data inconsistencies with expanded range
+Future Equipment: Ready to accommodate high-efficiency units
+4. Server-Side Considerations
+Route Validation (server/routes.ts)
+Current State: Server relies on client-side validation functions
+Impact: No direct changes needed - server uses same validation logic
+Consistency: Server-side validation will automatically align with client changes
+API Responses
+Error Handling: Existing error transformation logic will work unchanged
+Validation Messages: Updated messages will flow through existing error processing
+Response Format: No changes to API response structure needed
+5. Schema and Database Impact
+Schema Validation (shared/schema.ts)
+Current State: No explicit SEER limits in Zod schema
+Assessment: Database schema already supports SEER values up to 50+
+No Changes Required: Existing real type can handle the extended range
+Database Storage
+Current Capacity: PostgreSQL real type supports the extended range
+Data Migration: No migration needed - existing data remains valid
+New Equipment: Ready to store high-efficiency equipment data
+6. Testing and Validation Requirements
+Regression Testing
+Existing Equipment: Verify all current equipment still validates correctly
+Edge Cases: Test equipment with SEER exactly at 25, 26, and 50
+Error Handling: Ensure proper validation for SEER > 50
+User Experience Testing
+Warning Display: Verify no unexpected warnings appear for valid high-efficiency equipment
+Performance: Confirm no performance impact from validation changes
+Equipment Recommendations: Test that high-SEER equipment appears in results
+7

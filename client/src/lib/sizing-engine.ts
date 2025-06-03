@@ -134,8 +134,8 @@ function validateEquipmentSpecs(equipment: Equipment): string[] {
       break;
 
     case 'ac':
-      if (equipment.seer && (equipment.seer < 13 || equipment.seer > 25)) {
-        errors.push(`AC SEER rating ${equipment.seer} is outside typical range (13-25)`);
+      if (equipment.seer && (equipment.seer < 13 || equipment.seer > 50)) {
+        errors.push(`AC SEER rating ${equipment.seer} is outside typical range (13-50)`);
       }
       if (equipment.nominalTons && equipment.coolingCapacityBtu &&
           Math.abs(equipment.coolingCapacityBtu - (equipment.nominalTons * 12000)) > 2000) {
@@ -144,8 +144,8 @@ function validateEquipmentSpecs(equipment: Equipment): string[] {
       break;
 
     case 'heat_pump':
-      if (equipment.seer && (equipment.seer < 13 || equipment.seer > 25)) {
-        errors.push(`Heat pump SEER rating ${equipment.seer} is outside typical range (13-25)`);
+      if (equipment.seer && (equipment.seer < 13 || equipment.seer > 50)) {
+        errors.push(`Heat pump SEER rating ${equipment.seer} is outside typical range (13-50)`);
       }
       if (equipment.hspf && (equipment.hspf < 8 || equipment.hspf > 15)) {
         errors.push(`Heat pump HSPF rating ${equipment.hspf} is outside typical range (8-15)`);
@@ -169,8 +169,8 @@ function validateEquipmentSpecs(equipment: Equipment): string[] {
       if (equipment.afue && (equipment.afue < 0.80 || equipment.afue > 0.98)) {
         errors.push(`Combo system furnace AFUE rating ${(equipment.afue * 100).toFixed(0)}% is outside typical range (80-98%)`);
       }
-      if (equipment.seer && (equipment.seer < 13 || equipment.seer > 25)) {
-        errors.push(`Combo system AC SEER rating ${equipment.seer} is outside typical range (13-25)`);
+      if (equipment.seer && (equipment.seer < 13 || equipment.seer > 50)) {
+        errors.push(`Combo system AC SEER rating ${equipment.seer} is outside typical range (13-50)`);
       }
       if (!equipment.heatingCapacityBtu || !equipment.coolingCapacityBtu) {
         errors.push(`Combo system must have both heating and cooling capacities`);

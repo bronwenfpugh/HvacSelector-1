@@ -593,32 +593,9 @@ function evaluateHeatPump(
   let sizingStatus: 'optimal' | 'acceptable' | 'oversized' | 'undersized' = 'undersized';
   let backupHeatRequired: number | undefined;
 
-  if (isHeatingDominant && shr < 0.95 && !sizeToHeating) {
-    // Size to cooling load when heating > cooling and SHR < 0.95 and user selects "size to cooling"
-    sizingPercentage = Math.round((equipment.coolingCapacityBtu / loadInputs.totalCoolingBtu) * 100);
-    
-    const minRange = equipment.staging === 'single_stage' ? 90 : equipment.staging === 'two_stage' ? 90 : 90;
-    const maxRange = equipment.staging === 'single_stage' ? (loadInputs.totalCoolingBtu <= 24000 ? 120 : 115) : 
-                     equipment.staging === 'two_stage' ? 125 : 130;
-
-    if (sizingPercentage >= minRange && sizingPercentage <= maxRange) {
-      sizingStatus = sizingPercentage <= 110 ? 'optimal' : 'acceptable';
-      
-      // Calculate backup heat needed
-      const heatDeficit = loadInputs.totalHeatingBtu - equipment.heatingCapacityBtu;
-      if (heatDeficit > 0) {
-        backupHeatRequired = Math.round((heatDeficit / 3412) * 10) / 10; // Convert to kW, round to 1 decimal
-        warnings.push(`Be sure to add backup heat. ${backupHeatRequired} kW of backup heat are required.`);
-      }
-      
-      instructions.push(`Use OEM data to verify the system has ${latentCooling.toLocaleString()} BTU min latent capacity`);
-    } else if (sizingPercentage > maxRange) {
-      sizingStatus = 'oversized';
-    } else {
-      return null;
-    }
-  } else if (isHeatingDominant && sizeToHeating) {
-    // Size to heating load when user selects "size to heating"
+  // Determine sizing basis
+  if (isHeatingDominant && sizeToHeating) {
+    // Size to heating load when user explicitly selects "size to heating"
     sizingPercentage = Math.round((equipment.heatingCapacityBtu / loadInputs.totalHeatingBtu) * 100);
     
     if (sizingPercentage >= 100 && sizingPercentage <= 150) {
@@ -634,8 +611,35 @@ function evaluateHeatPump(
     } else {
       return null;
     }
+  } else if (isHeatingDominant && !sizeToHeating) {
+    // Size to cooling load when heating > cooling and user selects "size to cooling"
+    sizingPercentage = Math.round((equipment.coolingCapacityBtu / loadInputs.totalCoolingBtu) * 100);
+    
+    const minRange = equipment.staging === 'single_stage' ? 90 : equipment.staging === 'two_stage' ? 90 : 90;
+    const maxRange = equipment.staging === 'single_stage' ? (loadInputs.totalCoolingBtu <= 24000 ? 120 : 115) : 
+                     equipment.staging === 'two_stage' ? 125 : 130;
+
+    if (sizingPercentage >= minRange && sizingPercentage <= maxRange) {
+      sizingStatus = sizingPercentage <= 110 ? 'optimal' : 'acceptable';
+      
+      // Calculate backup heat needed (regardless of SHR)
+      const heatDeficit = loadInputs.totalHeatingBtu - equipment.heatingCapacityBtu;
+      if (heatDeficit > 0) {
+        backupHeatRequired = Math.round((heatDeficit / 3412) * 10) / 10; // Convert to kW, round to 1 decimal
+        warnings.push(`Be sure to add backup heat. ${backupHeatRequired} kW of backup heat are required.`);
+      }
+      
+      // Add SHR-specific instructions
+      if (shr < 0.95) {
+        instructions.push(`Use OEM data to verify the system has ${latentCooling.toLocaleString()} BTU min latent capacity`);
+      }
+    } else if (sizingPercentage > maxRange) {
+      sizingStatus = 'oversized';
+    } else {
+      return null;
+    }
   } else {
-    // Size to cooling load (default case)
+    // Size to cooling load (default case when cooling >= heating)
     sizingPercentage = Math.round((equipment.coolingCapacityBtu / loadInputs.totalCoolingBtu) * 100);
     
     const minRange = equipment.staging === 'single_stage' ? 90 : equipment.staging === 'two_stage' ? 90 : 90;

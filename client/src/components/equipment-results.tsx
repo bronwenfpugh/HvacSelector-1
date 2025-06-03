@@ -168,15 +168,15 @@ export default function EquipmentResults({ recommendations, isLoading }: Equipme
                         const deratingWarning = recommendation.warnings.find(warning => 
                           warning.includes("Derate heating capacity by") && warning.includes("due to elevation")
                         );
-                        
+
                         if (deratingWarning && (recommendation.equipment.equipmentType === 'furnace' || recommendation.equipment.equipmentType === 'furnace_ac_combo')) {
                           // Extract derating percentage from warning message
                           const percentMatch = deratingWarning.match(/Derate heating capacity by (\d+\.?\d*)% due to elevation/);
                           const deratingPercentage = percentMatch ? parseFloat(percentMatch[1]) : 0;
-                          
+
                           const nominalCapacity = recommendation.equipment.nominalBtu || 0;
                           const effectiveCapacity = Math.round(nominalCapacity * (1 - deratingPercentage / 100));
-                          
+
                           return (
                             <div className="space-y-1">
                               <div className="text-sm font-semibold text-carbon">

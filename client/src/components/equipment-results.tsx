@@ -163,12 +163,45 @@ export default function EquipmentResults({ recommendations, isLoading }: Equipme
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                     <div>
                       <div className="text-sm font-medium text-slate-1">Capacity</div>
-                      <div className="text-sm font-semibold text-carbon">
-                        {recommendation.equipment.nominalTons ? 
-                          `${recommendation.equipment.nominalTons} Tons` : 
-                          `${(recommendation.equipment.nominalBtu || 0).toLocaleString()} BTU/hr`
+                      {(() => {
+                        // Check if there's an elevation derating warning
+                        const deratingWarning = recommendation.warnings.find(warning => 
+                          warning.includes("Derate heating capacity by") && warning.includes("due to elevation")
+                        );
+                        
+                        if (deratingWarning && (recommendation.equipment.equipmentType === 'furnace' || recommendation.equipment.equipmentType === 'furnace_ac_combo')) {
+                          // Extract derating percentage from warning message
+                          const percentMatch = deratingWarning.match(/Derate heating capacity by (\d+\.?\d*)% due to elevation/);
+                          const deratingPercentage = percentMatch ? parseFloat(percentMatch[1]) : 0;
+                          
+                          const nominalCapacity = recommendation.equipment.nominalBtu || 0;
+                          const effectiveCapacity = Math.round(nominalCapacity * (1 - deratingPercentage / 100));
+                          
+                          return (
+                            <div className="space-y-1">
+                              <div className="text-sm font-semibold text-carbon">
+                                Nominal: {nominalCapacity.toLocaleString()} BTU/hr
+                              </div>
+                              <div className="text-sm font-semibold text-warning-orange">
+                                Effective: {effectiveCapacity.toLocaleString()} BTU/hr
+                              </div>
+                              <div className="text-xs text-slate-1">
+                                (after elevation derating)
+                              </div>
+                            </div>
+                          );
+                        } else {
+                          // Normal capacity display
+                          return (
+                            <div className="text-sm font-semibold text-carbon">
+                              {recommendation.equipment.nominalTons ? 
+                                `${recommendation.equipment.nominalTons} Tons` : 
+                                `${(recommendation.equipment.nominalBtu || 0).toLocaleString()} BTU/hr`
+                              }
+                            </div>
+                          );
                         }
-                      </div>
+                      })()}
                     </div>
                     <div>
                       <div className="text-sm font-medium text-slate-1">

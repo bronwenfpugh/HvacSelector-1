@@ -1,0 +1,45 @@
+Create a plan to update the sizing engine to apply derating calculation for furnaces, based on elevation. Also create a plan to update the equipment display logic to show this message: "Listed capacity reflects x% deration due to elevation."
+
+Calculation Logic
+Trigger condition: elevation > 1000 AND equipment type = "furnace"
+Derating formula: x% = 3% × (elevation - 1000) / 1000
+
+Examples:
+
+2,000 ft elevation = 3% derating
+3,500 ft elevation = 7.5% derating
+5,000 ft elevation = 12% derating
+
+Display Requirements
+Append this text to matching pricebook equipment listings: "Listed capacity reflects x% deration due to elevation."
+Replace x with the calculated percentage (rounded to 1 decimal place)
+Only show for furnace equipment when elevation > 1,000 feet
+Integration Points
+Current State:
+Elevation field exists in shared/schema.ts as optional number (-3000 to 30000 feet)
+Field is validated but not used in calculations in client/src/lib/sizing-engine.ts
+No UI form field currently exists
+
+Required Changes:
+
+Modify sizing engine to apply derating calculation for furnaces
+Update equipment display logic to show derating message
+Ensure derating affects actual capacity calculations, not just display
+Technical Specifications
+Apply derating to heating capacity only (not cooling)
+Derating should affect equipment selection/sizing logic
+Message should appear in equipment listings/recommendations
+Validate elevation input exists and is > 1000 before applying
+Equipment type identification: ensure furnaces are correctly identified in the system
+Expected Output Example
+Equipment: GMSS960603BN
+Goodman - Gas Furnace
+Capacity: 80,000 BTU/hr
+Derate heating capacity by 6.0% due to elevation.
+Effective Capacity: 75,200 BTU/hr
+Files to Modify
+
+client/src/lib/sizing-engine.ts - Add calculation logic
+Equipment display components - Add derating message
+Ensure elevation data flows from input → calculation → display
+Please create a plan to implement this elevation derating feature with the exact calculation formula and display text specified above. The plan should update all relevant area (front end, server, database, etc). Do not write any code, just analyze.

@@ -1,0 +1,60 @@
+Implement Elevation-Based Furnace Capacity Derating
+Task Overview
+Add functionality to automatically derate furnace heating capacity based on elevation input when elevation > 1,000 feet.
+Required Implementation
+1. Calculation Logic
+
+Trigger condition: elevation > 1000 AND equipment type = "furnace"
+Derating formula: x% = 3% × (elevation - 1000) / 1000
+
+Examples:
+
+2,000 ft elevation = 3% derating
+3,500 ft elevation = 7.5% derating
+5,000 ft elevation = 12% derating
+
+
+
+
+
+2. Display Requirements
+
+Append this text to matching pricebook equipment listings: "Derate heating capacity by x% due to elevation."
+Replace x with the calculated percentage (rounded to 1 decimal place)
+Only show for furnace equipment when elevation > 1,000 feet
+
+3. Integration Points
+Current State:
+
+Elevation field exists in shared/schema.ts as optional number (-3000 to 30000 feet)
+Field is validated but not used in calculations in client/src/lib/sizing-engine.ts
+No UI form field currently exists
+
+Required Changes:
+
+Add elevation input field to the UI form
+Modify sizing engine to apply derating calculation for furnaces
+Update equipment display logic to show derating message
+Ensure derating affects actual capacity calculations, not just display
+
+4. Technical Specifications
+
+Apply derating to heating capacity only (not cooling)
+Derating should affect equipment selection/sizing logic
+Message should appear in equipment listings/recommendations
+Validate elevation input exists and is > 1000 before applying
+Equipment type identification: ensure furnaces are correctly identified in the system
+
+5. Expected Output Example
+Equipment: XYZ Furnace Model ABC
+Heating Capacity: 80,000 BTU/hr
+Derate heating capacity by 6.0% due to elevation.
+Effective Capacity: 75,200 BTU/hr
+Files to Modify
+
+client/src/lib/sizing-engine.ts - Add calculation logic
+UI form components - Add elevation input field
+Equipment display components - Add derating message
+Ensure elevation data flows from input → calculation → display
+
+Please implement this elevation derating feature with the exact calculation formula and display text specified above.

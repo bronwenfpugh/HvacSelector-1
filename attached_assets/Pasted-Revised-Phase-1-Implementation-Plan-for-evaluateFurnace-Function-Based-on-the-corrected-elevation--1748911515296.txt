@@ -1,0 +1,44 @@
+Revised Phase 1 Implementation Plan for evaluateFurnace() Function
+Based on the corrected elevation derating formula, here's my updated implementation plan:
+
+Core Changes Required:
+1. Elevation Derating Calculation:
+
+Trigger Condition: elevation > 1000 AND equipmentType === 'furnace'
+Corrected Derating Formula: deratingPercentage = 3 × elevation / 1000
+Derating Factor: deratingFactor = 1 - (deratingPercentage / 100)
+2. Updated Calculation Sequence:
+
+1. Get actualOutput = equipment.heatingCapacityBtu (already AFUE-adjusted)
+2. If elevation > 1000:
+   - Calculate deratingPercentage = 3 × elevation / 1000
+   - Calculate deratingFactor = 1 - (deratingPercentage / 100)
+   - Apply: actualOutput = actualOutput × deratingFactor
+   - Add warning message with rounded percentage
+3. Calculate sizingPercentage using derated actualOutput
+4. Continue with existing sizing status logic
+3. Corrected Examples with New Formula:
+
+Sea level (0 ft): 3 × 0 / 1000 = 0% derating
+1,000 ft: 3 × 1000 / 1000 = 3% derating
+2,000 ft: 3 × 2000 / 1000 = 6% derating
+3,500 ft: 3 × 3500 / 1000 = 10.5% derating
+5,000 ft: 3 × 5000 / 1000 = 15% derating
+4. Message Implementation:
+
+Warning Text: "Derate heating capacity by ${deratingPercentage.toFixed(1)}% due to elevation."
+Display Condition: Only when elevation > 1000 AND equipmentType === 'furnace'
+Placement: Add to existing warnings array
+5. Impact on Sizing Logic:
+
+The derating is applied to the actualOutput capacity before calculating sizingPercentage
+This means equipment that was previously at 100% of load at elevation might now be at 85% (at 5,000 ft), potentially changing its sizing status
+Some equipment may no longer qualify if the derated capacity falls below the minimum threshold
+6. Integration Benefits:
+
+No function signature changes needed (elevation already in loadInputs)
+Maintains backward compatibility for sea-level calculations
+Follows existing pattern of capacity adjustments before sizing calculations
+Clear messaging to users about elevation impact
+This corrected approach properly reflects that equipment capacity decreases continuously with elevation from sea level, not just above 1,000 feet, while still only displaying the derating message when the impact is meaningful (above 1,000 feet).
+

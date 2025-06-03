@@ -485,7 +485,16 @@ function evaluateFurnace(
 ): EquipmentRecommendation | null {
   if (!equipment.heatingCapacityBtu || loadInputs.totalHeatingBtu === 0) return null;
 
-  const actualOutput = equipment.heatingCapacityBtu; // Already adjusted for AFUE in data
+  let actualOutput = equipment.heatingCapacityBtu; // Already adjusted for AFUE in data
+  
+  // Apply elevation derating for furnaces
+  if (loadInputs.elevation && loadInputs.elevation > 1000) {
+    const deratingPercentage = 3 * loadInputs.elevation / 1000;
+    const deratingFactor = 1 - (deratingPercentage / 100);
+    actualOutput = actualOutput * deratingFactor;
+    warnings.push(`Derate heating capacity by ${deratingPercentage.toFixed(1)}% due to elevation.`);
+  }
+
   const sizingPercentage = Math.round((actualOutput / loadInputs.totalHeatingBtu) * 100);
   let sizingStatus: 'optimal' | 'acceptable' | 'oversized' | 'undersized' = 'undersized';
 

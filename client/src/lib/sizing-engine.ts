@@ -619,24 +619,26 @@ function evaluateHeatPump(
     const maxRange = equipment.staging === 'single_stage' ? (loadInputs.totalCoolingBtu <= 24000 ? 120 : 115) : 
                      equipment.staging === 'two_stage' ? 125 : 130;
 
+    // Determine sizing status
     if (sizingPercentage >= minRange && sizingPercentage <= maxRange) {
       sizingStatus = sizingPercentage <= 110 ? 'optimal' : 'acceptable';
-      
-      // Calculate backup heat needed (regardless of SHR)
-      const heatDeficit = loadInputs.totalHeatingBtu - equipment.heatingCapacityBtu;
-      if (heatDeficit > 0) {
-        backupHeatRequired = Math.round((heatDeficit / 3412) * 10) / 10; // Convert to kW, round to 1 decimal
-        warnings.push(`Be sure to add backup heat. ${backupHeatRequired} kW of backup heat are required.`);
-      }
-      
-      // Add SHR-specific instructions
-      if (shr < 0.95) {
-        instructions.push(`Use OEM data to verify the system has ${latentCooling.toLocaleString()} BTU min latent capacity`);
-      }
     } else if (sizingPercentage > maxRange) {
       sizingStatus = 'oversized';
+      warnings.push(`This heat pump is ${sizingPercentage}% oversized and may struggle with humidity control.`);
     } else {
-      return null;
+      return null; // Don't show undersized equipment
+    }
+    
+    // Calculate backup heat needed for ALL units in this scenario (optimal, acceptable, AND oversized)
+    const heatDeficit = loadInputs.totalHeatingBtu - equipment.heatingCapacityBtu;
+    if (heatDeficit > 0) {
+      backupHeatRequired = Math.round((heatDeficit / 3412) * 10) / 10; // Convert to kW, round to 1 decimal
+      warnings.push(`Be sure to add backup heat. ${backupHeatRequired} kW of backup heat are required.`);
+    }
+    
+    // Add SHR-specific instructions
+    if (shr < 0.95) {
+      instructions.push(`Use OEM data to verify the system has ${latentCooling.toLocaleString()} BTU min latent capacity`);
     }
   } else {
     // Size to cooling load (default case when cooling >= heating)

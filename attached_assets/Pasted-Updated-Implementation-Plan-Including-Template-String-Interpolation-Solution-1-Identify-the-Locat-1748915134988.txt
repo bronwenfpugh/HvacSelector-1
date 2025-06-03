@@ -1,0 +1,73 @@
+Updated Implementation Plan - Including Template String Interpolation Solution
+1. Identify the Location (No Changes)
+The warning logic needs to be added to the evaluateHeatPump function in client/src/lib/sizing-engine.ts, specifically after the sizing calculations but before the return statement where other warnings are being collected.
+
+2. Warning Logic Requirements (No Changes)
+Based on the requirements document and Option 1 approach, the warning should trigger when:
+
+loadInputs.outdoorWinterDesignTemp !== undefined (explicit undefined check)
+loadInputs.outdoorWinterDesignTemp < 30 (temperature threshold check)
+Equipment type is heat pump (guaranteed in this function)
+3. Warning Message Format - UPDATED WITH TEMPLATE INTERPOLATION
+The warning message should use JavaScript template literal syntax for dynamic temperature insertion:
+
+`Heat pumps lose capacity in colder weather. Use a cold climate heat pump. Verify the system's capacity at ${loadInputs.outdoorWinterDesignTemp}°F using performance data.`
+Key improvements over original plan:
+
+Dynamic Content: Real temperature values (e.g., "25°F") instead of literal "[temperature]°F" text
+Professional Output: Users see specific, actionable temperature references
+Type Safety: TypeScript ensures outdoorWinterDesignTemp is a number when accessed due to Option 1's undefined check
+4. Implementation Strategy - UPDATED FOR TEMPLATE INTERPOLATION
+Where to add: In the evaluateHeatPump function, after the CFM calculation but before the return statement.
+
+Logic flow using Option 1 + Template Interpolation:
+
+After calculating recommendedCfm and adding CFM instruction
+Add explicit check: if (loadInputs.outdoorWinterDesignTemp !== undefined && loadInputs.outdoorWinterDesignTemp < 30)
+If both conditions are true, push the warning message using template literal interpolation:
+warnings.push(`Heat pumps lose capacity in colder weather. Use a cold climate heat pump. Verify the system's capacity at ${loadInputs.outdoorWinterDesignTemp}°F using performance data.`);
+Existing warning infrastructure handles display
+Code location: Right after this line in the function:
+
+instructions.push(`Verify existing ductwork is capable of handling at least ${recommendedCfm.toLocaleString()} CFM`);
+5. Integration Points (No Changes)
+Existing infrastructure that works:
+
+Form data collection (already capturing outdoorWinterDesignTemp)
+API endpoints (already passing LoadInputs correctly)
+Warning display UI (already implemented in equipment-results.tsx)
+Schema validation (already validates temperature range)
+Single change needed:
+
+Add 3-4 lines of code to evaluateHeatPump function using Option 1's explicit undefined check + template string interpolation
+6. Testing Considerations - UPDATED FOR INTERPOLATION
+Test scenarios for Option 1 + Template Interpolation:
+
+outdoorWinterDesignTemp = 35 (no warning - above threshold)
+outdoorWinterDesignTemp = 25 (warning appears: "...Verify the system's capacity at 25°F using performance data.")
+outdoorWinterDesignTemp = -5 (warning appears: "...Verify the system's capacity at -5°F using performance data.")
+outdoorWinterDesignTemp = undefined (no warning - explicit undefined check prevents comparison)
+outdoorWinterDesignTemp = null (no warning - !== undefined check handles this)
+Multiple warnings scenario (temperature warning + other warnings)
+Temperature exactly 30°F (no warning - uses < 30 not <= 30)
+Validation of output quality:
+
+Verify professional message formatting with real temperature values
+Confirm no literal "[temperature]" text appears in user interface
+Test temperature interpolation works correctly with negative values
+7. Consistency with Existing Code Patterns (Enhanced)
+Looking at the existing sizing-engine.ts, this follows the same patterns:
+
+Undefined checking: Matches existing if (loadInputs.elevation && loadInputs.elevation > 1000) pattern
+Template literals: Consistent with existing code like instructions.push(\Verify existing ductwork is capable of handling at least ${recommendedCfm.toLocaleString()} CFM`)`
+Warning message format: Aligns with professional tone of existing warning messages
+8. Risk Mitigation - ENHANCED FOR INTERPOLATION
+Option 1 + Template Interpolation addresses both critical issues:
+
+TypeScript Safety: Explicit undefined check prevents any possibility of undefined < 30 comparison
+Runtime Safety: No risk of unexpected behavior with null/undefined values
+Message Quality: Template interpolation ensures professional output with real temperature values
+User Experience: Contractors receive specific, actionable guidance with their actual design temperature
+Code Clarity: Intent is crystal clear to future maintainers
+Consistency: Matches existing patterns in the codebase for both optional property checks and dynamic message formatting
+This implementation plan now specifically addresses both the temperature check logic issues (Option 1) and the message formatting inconsistency (template string interpolation), providing a complete solution that ensures both runtime safety and professional user output.

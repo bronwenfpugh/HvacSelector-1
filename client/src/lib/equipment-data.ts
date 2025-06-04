@@ -24,7 +24,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s9v2/S9V2-gas-furnace-cutaway.jpg"
   },
   {
     id: "american-standard-s9v2-40000-two",
@@ -48,7 +48,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s9v2/S9V2-gas-furnace-cutaway.jpg"
   },
   {
     id: "american-standard-s9v2-40000-variable",
@@ -72,7 +72,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s9v2/S9V2-gas-furnace-cutaway.jpg"
   },
   {
     id: "american-standard-s8v2-50000-single",
@@ -96,7 +96,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s8v2/S8V2-Gas-Furnace-Cutaway.jpg"
   },
   {
     id: "american-standard-s8v2-50000-two",
@@ -120,7 +120,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s8v2/S8V2-Gas-Furnace-Cutaway.jpg"
   },
   {
     id: "american-standard-s8v2-50000-variable",
@@ -144,7 +144,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s8v2/S8V2-Gas-Furnace-Cutaway.jpg"
   },
   {
     id: "american-standard-s8x2-60000-single",
@@ -168,7 +168,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s8x2/S8X2-Gas-Furnace-Cutaway.jpg"
   },
   {
     id: "american-standard-s8x2-60000-two",
@@ -192,7 +192,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s8x2/S8X2-Gas-Furnace-Cutaway.jpg"
   },
   {
     id: "american-standard-s8x2-60000-variable",
@@ -216,7 +216,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s8x2/S8X2-Gas-Furnace-Cutaway.jpg"
   },
   {
     id: "american-standard-s9v2-80000-single",
@@ -240,7 +240,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s9v2/S9V2-gas-furnace-cutaway.jpg"
   },
   {
     id: "american-standard-s9v2-80000-two",
@@ -264,7 +264,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s9v2/S9V2-gas-furnace-cutaway.jpg"
   },
   {
     id: "american-standard-s9v2-80000-variable",
@@ -288,7 +288,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s9v2/S9V2-gas-furnace-cutaway.jpg"
   },
   {
     id: "american-standard-s8v2-100000-single",
@@ -312,7 +312,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s8v2/S8V2-Gas-Furnace-Cutaway.jpg"
   },
   {
     id: "american-standard-s8v2-100000-two",
@@ -336,7 +336,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s8v2/S8V2-Gas-Furnace-Cutaway.jpg"
   },
   {
     id: "american-standard-s8v2-100000-variable",
@@ -360,7 +360,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s8v2/S8V2-Gas-Furnace-Cutaway.jpg"
   },
   {
     id: "american-standard-s8x2-120000-single",
@@ -384,7 +384,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s8x2/S8X2-Gas-Furnace-Cutaway.jpg"
   },
   {
     id: "american-standard-s8x2-120000-two",
@@ -408,7 +408,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s8x2/S8X2-Gas-Furnace-Cutaway.jpg"
   },
   {
     id: "american-standard-s8x2-120000-variable",
@@ -432,7 +432,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/gas-furnaces/s8x2/S8X2-Gas-Furnace-Cutaway.jpg"
   },
 
   // AMERICAN STANDARD AIR CONDITIONERS
@@ -458,7 +458,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac16/4AC16-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac16015-two",
@@ -482,7 +482,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac16/4AC16-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac16015-variable",
@@ -506,7 +506,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac16/4AC16-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac14020-single",
@@ -530,7 +530,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac14/4AC14-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac14020-two",
@@ -554,7 +554,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac14/4AC14-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac14020-variable",
@@ -578,7 +578,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac14/4AC14-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac13025-single",
@@ -602,7 +602,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac13/4AC13-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac13025-two",
@@ -626,7 +626,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac13/4AC13-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac13025-variable",
@@ -650,7 +650,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac13/4AC13-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac16030-single",
@@ -674,7 +674,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac16/4AC16-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac16030-two",
@@ -698,7 +698,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac16/4AC16-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac16030-variable",
@@ -722,7 +722,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac16/4AC16-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac14040-single",
@@ -746,7 +746,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac14/4AC14-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac14040-two",
@@ -770,7 +770,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac14/4AC14-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac14040-variable",
@@ -794,7 +794,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac14/4AC14-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac13050-single",
@@ -818,7 +818,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac13/4AC13-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac13050-two",
@@ -842,7 +842,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac13/4AC13-Air-Conditioner.jpg"
   },
   {
     id: "american-standard-4ac13050-variable",
@@ -866,7 +866,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/air-conditioners/4ac13/4AC13-Air-Conditioner.jpg"
   },
 
   // AMERICAN STANDARD HEAT PUMPS
@@ -892,7 +892,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4txd/4TXD-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4txd015-two",
@@ -916,7 +916,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4txd/4TXD-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4txd015-variable",
@@ -940,7 +940,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4txd/4TXD-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4twd020-single",
@@ -964,7 +964,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4twd/4TWD-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4twd020-two",
@@ -988,7 +988,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4twd/4TWD-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4twd020-variable",
@@ -1012,7 +1012,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4twd/4TWD-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4txa025-single",
@@ -1036,7 +1036,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4txa/4TXA-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4txa025-two",
@@ -1060,7 +1060,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4txa/4TXA-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4txa025-variable",
@@ -1084,7 +1084,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4txa/4TXA-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4txd030-single",
@@ -1108,7 +1108,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4txd/4TXD-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4txd030-two",
@@ -1132,7 +1132,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4txd/4TXD-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4txd030-variable",
@@ -1156,7 +1156,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4txd/4TXD-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4twd040-single",
@@ -1180,7 +1180,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4twd/4TWD-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4twd040-two",
@@ -1204,7 +1204,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4twd/4TWD-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4twd040-variable",
@@ -1228,7 +1228,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4twd/4TWD-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4txa050-single",
@@ -1252,7 +1252,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4txa/4TXA-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4txa050-two",
@@ -1276,7 +1276,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4txa/4TXA-Heat-Pump.jpg"
   },
   {
     id: "american-standard-4txa050-variable",
@@ -1300,7 +1300,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.americanstandardair.com/content/dam/as-air/na/us/products/heat-pumps/4txa/4TXA-Heat-Pump.jpg"
   },
 
   // RHEEM FURNACES
@@ -1326,7 +1326,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r96v/R96V-Prestige-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r96v-40000-two",
@@ -1350,7 +1350,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r96v/R96V-Prestige-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r96v-40000-variable",
@@ -1374,7 +1374,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r96v/R96V-Prestige-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r80t-50000-single",
@@ -1398,7 +1398,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r80t/R80T-Classic-Plus-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r80t-50000-two",
@@ -1422,7 +1422,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r80t/R80T-Classic-Plus-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r80t-50000-variable",
@@ -1446,7 +1446,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r80t/R80T-Classic-Plus-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r92p-60000-single",
@@ -1470,7 +1470,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r92p/R92P-Prestige-High-Efficiency-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r92p-60000-two",
@@ -1494,7 +1494,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r92p/R92P-Prestige-High-Efficiency-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r92p-60000-variable",
@@ -1518,7 +1518,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r92p/R92P-Prestige-High-Efficiency-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r96v-80000-single",
@@ -1542,7 +1542,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r96v/R96V-Prestige-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r96v-80000-two",
@@ -1566,7 +1566,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r96v/R96V-Prestige-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r96v-80000-variable",
@@ -1590,7 +1590,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r96v/R96V-Prestige-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r80t-100000-single",
@@ -1614,7 +1614,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r80t/R80T-Classic-Plus-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r80t-100000-two",
@@ -1638,7 +1638,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r80t/R80T-Classic-Plus-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r80t-100000-variable",
@@ -1662,7 +1662,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r80t/R80T-Classic-Plus-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r92p-120000-single",
@@ -1686,7 +1686,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r92p/R92P-Prestige-High-Efficiency-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r92p-120000-two",
@@ -1710,7 +1710,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r92p/R92P-Prestige-High-Efficiency-Gas-Furnace.jpg"
   },
   {
     id: "rheem-r92p-120000-variable",
@@ -1734,10 +1734,10 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/gas-furnaces/r92p/R92P-Prestige-High-Efficiency-Gas-Furnace.jpg"
   },
 
-  // RHEEM AIR CONDITIONERS
+  // RHEEM AIR CONDITIONERS  
   {
     id: "rheem-ra20015-single",
     manufacturer: "Rheem",
@@ -1760,7 +1760,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra20/RA20-Value-Series-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra20015-two",
@@ -1784,7 +1784,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra20/RA20-Value-Series-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra20015-variable",
@@ -1808,7 +1808,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra20/RA20-Value-Series-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra16020-single",
@@ -1832,7 +1832,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra16/RA16-Classic-Series-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra16020-two",
@@ -1856,7 +1856,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra16/RA16-Classic-Series-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra16020-variable",
@@ -1880,7 +1880,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra16/RA16-Classic-Series-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra14025-single",
@@ -1904,7 +1904,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra14/RA14-Classic-Plus-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra14025-two",
@@ -1928,7 +1928,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra14/RA14-Classic-Plus-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra14025-variable",
@@ -1952,7 +1952,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra14/RA14-Classic-Plus-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra20030-single",
@@ -1976,7 +1976,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra20/RA20-Value-Series-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra20030-two",
@@ -2000,7 +2000,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra20/RA20-Value-Series-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra20030-variable",
@@ -2024,7 +2024,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra20/RA20-Value-Series-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra16040-single",
@@ -2048,7 +2048,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra16/RA16-Classic-Series-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra16040-two",
@@ -2072,7 +2072,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra16/RA16-Classic-Series-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra16040-variable",
@@ -2096,7 +2096,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra16/RA16-Classic-Series-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra14050-single",
@@ -2120,7 +2120,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra14/RA14-Classic-Plus-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra14050-two",
@@ -2144,7 +2144,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra14/RA14-Classic-Plus-Air-Conditioner.jpg"
   },
   {
     id: "rheem-ra14050-variable",
@@ -2168,7 +2168,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/air-conditioners/ra14/RA14-Classic-Plus-Air-Conditioner.jpg"
   },
 
   // RHEEM HEAT PUMPS
@@ -2194,7 +2194,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp16/RP16-Classic-Series-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp16015-two",
@@ -2218,7 +2218,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp16/RP16-Classic-Series-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp16015-variable",
@@ -2242,7 +2242,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp16/RP16-Classic-Series-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp14020-single",
@@ -2266,7 +2266,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp14/RP14-Classic-Plus-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp14020-two",
@@ -2290,7 +2290,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp14/RP14-Classic-Plus-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp14020-variable",
@@ -2314,7 +2314,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp14/RP14-Classic-Plus-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp20025-single",
@@ -2338,7 +2338,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp20/RP20-Value-Series-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp20025-two",
@@ -2362,7 +2362,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp20/RP20-Value-Series-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp20025-variable",
@@ -2386,7 +2386,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp20/RP20-Value-Series-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp16030-single",
@@ -2410,7 +2410,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp16/RP16-Classic-Series-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp16030-two",
@@ -2434,7 +2434,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp16/RP16-Classic-Series-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp16030-variable",
@@ -2458,7 +2458,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp16/RP16-Classic-Series-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp14040-single",
@@ -2482,7 +2482,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp14/RP14-Classic-Plus-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp14040-two",
@@ -2506,7 +2506,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp14/RP14-Classic-Plus-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp14040-variable",
@@ -2530,7 +2530,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp14/RP14-Classic-Plus-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp20050-single",
@@ -2554,7 +2554,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp20/RP20-Value-Series-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp20050-two",
@@ -2578,7 +2578,7 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp20/RP20-Value-Series-Heat-Pump.jpg"
   },
   {
     id: "rheem-rp20050-variable",
@@ -2602,6 +2602,6 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200"
+    imageUrl: "https://www.rheem.com/content/dam/Rheem/North%20America/products/residential/heat-pumps/rp20/RP20-Value-Series-Heat-Pump.jpg"
   }
 ];

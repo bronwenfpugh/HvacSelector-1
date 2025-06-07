@@ -3,6 +3,7 @@ import { Settings } from "lucide-react";
 import LoadInputForm from "@/components/load-input-form";
 import EquipmentResults from "@/components/equipment-results";
 import ValidationSummaryComponent from "@/components/validation-summary";
+import { generateValidationReport, generateMissingDataCSV } from "@/lib/validation-report";
 import type { LoadInputs, UserPreferences, EquipmentRecommendation, ValidationSummary } from "@shared/schema";
 
 export default function Home() {
@@ -19,6 +20,22 @@ export default function Home() {
 
   const [recommendations, setRecommendations] = useState<EquipmentRecommendation[]>([]);
   const [validationSummary, setValidationSummary] = useState<ValidationSummary | null>(null);
+
+  const handleGenerateValidationReport = () => {
+    const report = generateValidationReport();
+    console.log(report);
+
+    // Also create downloadable CSV
+    const csv = generateMissingDataCSV();
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'equipment-validation-issues.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
   const [isCalculating, setIsCalculating] = useState(false);
 
   const handleCalculate = async (inputs: LoadInputs, prefs: UserPreferences) => {
@@ -77,6 +94,24 @@ export default function Home() {
 
           {/* Results Area */}
           <div className="lg:col-span-2">
+            <div className="container mx-auto px-4 py-8">
+              <div className="text-center mb-8">
+                <h1 className="text-display-3 font-bold text-carbon mb-4">
+                  HVAC Equipment Selector
+                </h1>
+                <p className="text-subtitle-normal text-slate-1 max-w-2xl mx-auto">
+                  Calculate heating and cooling loads, then get equipment recommendations based on your specific requirements and preferences.
+                </p>
+                <div className="mt-4">
+                  <button
+                    onClick={handleGenerateValidationReport}
+                    className="px-4 py-2 bg-electric-purple text-white rounded-md hover:bg-electric-purple/80 text-sm"
+                  >
+                    Generate Equipment Validation Report
+                  </button>
+                </div>
+              </div>
+            </div>
             {validationSummary && validationSummary.totalEquipment > 0 && (
               <ValidationSummaryComponent validationSummary={validationSummary} />
             )}

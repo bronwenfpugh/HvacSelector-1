@@ -415,8 +415,8 @@ function evaluateEquipment(
   let backupHeatRequired: number | undefined;
   let recommendedCfm: number | undefined;
 
-  // Apply equipment filters
-  if (!passesFilters(equipment, preferences)) {
+  // Apply equipment filters (including tonnage oversizing filter)
+  if (!passesFilters(equipment, preferences, loadInputs)) {
     return null;
   }
 
@@ -443,7 +443,65 @@ function evaluateEquipment(
   }
 }
 
-function passesFilters(equipment: Equipment, preferences: UserPreferences): boolean {
+// Utility function to safely convert equipment capacity to tonnage
+function convertToTonnage(equipment: Equipment): number | null {
+  switch (equipment.equipmentType) {
+    case 'furnace':
+    case 'boiler':
+      // Heating-only equipment: use heating capacity
+      return equipment.heatingCapacityBtu ? Math.round((equipment.heatingCapacityBtu / 12000) * 100) / 100 : null;
+    
+    case 'ac':
+      // Cooling-only equipment: use cooling capacity
+      return equipment.coolingCapacityBtu ? Math.round((equipment.coolingCapacityBtu / 12000) * 100) / 100 : null;
+    
+    case 'heat_pump':
+      // Use dominant capacity based on load comparison - simplified approach for filtering
+      if (equipment.coolingCapacityBtu && equipment.heatingCapacityBtu) {
+        // Use larger capacity for conservative filtering
+        const maxCapacity = Math.max(equipment.coolingCapacityBtu, equipment.heatingCapacityBtu);
+        return Math.round((maxCapacity / 12000) * 100) / 100;
+      }
+      return equipment.coolingCapacityBtu ? Math.round((equipment.coolingCapacityBtu / 12000) * 100) / 100 : null;
+    
+    case 'furnace_ac_combo':
+      // Use larger of heating/cooling capacity
+      if (equipment.heatingCapacityBtu && equipment.coolingCapacityBtu) {
+        const maxCapacity = Math.max(equipment.heatingCapacityBtu, equipment.coolingCapacityBtu);
+        return Math.round((maxCapacity / 12000) * 100) / 100;
+      }
+      return null;
+    
+    default:
+      return null;
+  }
+}
+
+// Calculate required tonnage based on loads and sizing preference
+function calculateRequiredTonnage(loadInputs: LoadInputs, preferences: UserPreferences): number | null {
+  // Handle zero load scenarios
+  if (loadInputs.totalHeatingBtu === 0 && loadInputs.totalCoolingBtu === 0) {
+    return null;
+  }
+
+  // Determine sizing basis similar to heat pump evaluation logic
+  const isHeatingDominant = loadInputs.totalHeatingBtu > loadInputs.totalCoolingBtu;
+  const sizeToHeating = preferences.sizingPreference === 'size_to_heating';
+
+  let requiredLoad: number;
+
+  if (isHeatingDominant && sizeToHeating) {
+    requiredLoad = loadInputs.totalHeatingBtu;
+  } else if (loadInputs.totalCoolingBtu > 0) {
+    requiredLoad = loadInputs.totalCoolingBtu;
+  } else {
+    requiredLoad = loadInputs.totalHeatingBtu;
+  }
+
+  return Math.round((requiredLoad / 12000) * 100) / 100;
+}
+
+function passesFilters(equipment: Equipment, preferences: UserPreferences, loadInputs?: LoadInputs): boolean {
   // Brand filter
   if (preferences.brandFilter && preferences.brandFilter.length > 0) {
     if (!preferences.brandFilter.includes(equipment.manufacturer)) {
@@ -478,6 +536,18 @@ function passesFilters(equipment: Equipment, preferences: UserPreferences): bool
   // Price filter
   if (preferences.maxPrice && equipment.price > preferences.maxPrice) {
     return false;
+  }
+
+  // Tonnage oversizing filter - 0.5 tons for all loads
+  if (loadInputs) {
+    const equipmentTonnage = convertToTonnage(equipment);
+    const requiredTonnage = calculateRequiredTonnage(loadInputs, preferences);
+
+    if (equipmentTonnage && requiredTonnage) {
+      if (equipmentTonnage > requiredTonnage + 0.5) {
+        return false;
+      }
+    }
   }
 
   return true;

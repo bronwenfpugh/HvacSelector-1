@@ -277,9 +277,6 @@ export default function EquipmentResults({ recommendations, isLoading }: Equipme
                           'bg-warning-orange/10 border border-warning-orange/20' : 
                           'bg-dust-3'
                         }`}>
-                          <div className="text-sm font-medium text-carbon mb-2">Technical Details</div>
-                          
-                          {/* Combined content */}
                           <div className="space-y-2">
                             {recommendation.warnings.map((warning, index) => (
                               <div key={`warning-${index}`} className="flex items-start space-x-2">

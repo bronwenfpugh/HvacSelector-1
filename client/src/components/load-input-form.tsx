@@ -229,14 +229,14 @@ export default function LoadInputForm({
   };
 
   return (
-    <Card className="bg-dust-3 sticky top-8">
-      <CardHeader>
+    <Card className="bg-dust-3 max-h-[calc(100vh-4rem)] overflow-hidden flex flex-col">
+      <CardHeader className="flex-shrink-0">
         <CardTitle className="text-xl font-semibold text-carbon flex items-center space-x-2">
           <Settings className="h-5 w-5" />
           <span>Load Calculation Inputs</span>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 overflow-y-auto flex-1">
         {/* Load Inputs */}
         <div className="space-y-4">
           <div>

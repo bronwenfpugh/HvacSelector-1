@@ -1,10 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Toggle } from "@/components/ui/toggle";
-import { AlertTriangle, CheckCircle, ThumbsUp, Search, FileText } from "lucide-react";
+import { AlertTriangle, CheckCircle, ThumbsUp, Search, ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { EquipmentRecommendation } from "@shared/schema";
 
 interface EquipmentResultsProps {
@@ -13,14 +12,17 @@ interface EquipmentResultsProps {
 }
 
 export default function EquipmentResults({ recommendations, isLoading }: EquipmentResultsProps) {
-  const [showTechnicalDetails, setShowTechnicalDetails] = useState(() => {
-    const stored = sessionStorage.getItem('showTechnicalDetails');
-    return stored !== null ? JSON.parse(stored) : true;
-  });
+  const [expandedTechnicalDetails, setExpandedTechnicalDetails] = useState<Set<string>>(new Set());
 
-  useEffect(() => {
-    sessionStorage.setItem('showTechnicalDetails', JSON.stringify(showTechnicalDetails));
-  }, [showTechnicalDetails]);
+  const toggleTechnicalDetails = (equipmentId: string) => {
+    const newExpanded = new Set(expandedTechnicalDetails);
+    if (newExpanded.has(equipmentId)) {
+      newExpanded.delete(equipmentId);
+    } else {
+      newExpanded.add(equipmentId);
+    }
+    setExpandedTechnicalDetails(newExpanded);
+  };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -119,17 +121,6 @@ export default function EquipmentResults({ recommendations, isLoading }: Equipme
         <div className="flex items-center space-x-4">
           <div className="text-sm text-slate-1">
             <span className="font-semibold">{recommendations.length}</span> matches found
-          </div>
-          <div className="flex items-center space-x-2">
-            <Toggle
-              pressed={showTechnicalDetails}
-              onPressedChange={setShowTechnicalDetails}
-              aria-label="Toggle technical details"
-              className="text-sm"
-            >
-              <FileText className="w-4 h-4 mr-1" />
-              Technical Details
-            </Toggle>
           </div>
           <Select defaultValue="size-match">
             <SelectTrigger className="w-48">
@@ -265,66 +256,50 @@ export default function EquipmentResults({ recommendations, isLoading }: Equipme
                     </span>
                   </div>
 
-                  {/* Technical Details Section */}
-                  {showTechnicalDetails && (recommendation.instructions.length > 0 || recommendation.warnings.length > 0 || recommendation.backupHeatRequired || recommendation.recommendedCfm) && (
-                    <div className={`p-3 rounded-lg ${
-                      recommendation.warnings.length > 0 ? 
-                      'bg-warning-orange/10 border border-warning-orange/20' : 
-                      'bg-dust-3'
-                    }`}>
-                      {recommendation.warnings.length > 0 && (
-                        <div className="flex items-start space-x-2 mb-2">
-                          <AlertTriangle className="text-warning-orange mt-0.5 flex-shrink-0 w-4 h-4" />
-                          <div>
-                            <div className="text-sm font-medium text-carbon mb-2">
-                              {recommendation.warnings.length > 1 ? 'Important Requirements:' : 'Important Requirement:'}
-                            </div>
-                            <ul className="text-sm text-slate-1 space-y-1">
-                              {recommendation.warnings.map((warning, index) => (
-                                <li key={index}>• {warning}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      )}
-                      {recommendation.instructions.length > 0 && (
-                        <div className={recommendation.warnings.length > 0 ? 'mt-3' : ''}>
-                          <div className="text-sm font-medium text-carbon mb-2">Installation Notes:</div>
-                          <ul className="text-sm text-slate-1 space-y-1">
-                            {recommendation.instructions.map((instruction, index) => (
-                              <li key={index}>• {instruction}</li>
+                  {/* Technical Details Toggle and Section */}
+                  {(recommendation.instructions.length > 0 || recommendation.warnings.length > 0 || recommendation.backupHeatRequired) && (
+                    <div className="mt-4">
+                      <button
+                        onClick={() => toggleTechnicalDetails(recommendation.equipment.id)}
+                        className="flex items-center space-x-2 text-sm font-medium text-carbon hover:text-electric-purple transition-colors"
+                      >
+                        {expandedTechnicalDetails.has(recommendation.equipment.id) ? (
+                          <ChevronDown className="w-4 h-4" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4" />
+                        )}
+                        <span>Technical details</span>
+                      </button>
+                      
+                      {expandedTechnicalDetails.has(recommendation.equipment.id) && (
+                        <div className={`mt-3 p-3 rounded-lg ${
+                          recommendation.warnings.length > 0 ? 
+                          'bg-warning-orange/10 border border-warning-orange/20' : 
+                          'bg-dust-3'
+                        }`}>
+                          <div className="text-sm font-medium text-carbon mb-2">Technical Details</div>
+                          
+                          {/* Combined content */}
+                          <div className="space-y-2">
+                            {recommendation.warnings.map((warning, index) => (
+                              <div key={`warning-${index}`} className="flex items-start space-x-2">
+                                <AlertTriangle className="text-warning-orange mt-0.5 flex-shrink-0 w-4 h-4" />
+                                <div className="text-sm text-slate-1">• {warning}</div>
+                              </div>
                             ))}
-                          </ul>
-                        </div>
-                      )}
-                      {recommendation.backupHeatRequired && (
-                        <div className={recommendation.warnings.length > 0 || recommendation.instructions.length > 0 ? 'mt-3' : ''}>
-                          <div className="text-sm font-medium text-carbon mb-1">Backup Heat Required:</div>
-                          <div className="text-sm text-slate-1">
-                            {recommendation.backupHeatRequired.toLocaleString()} BTU/hr
+                            {recommendation.instructions.map((instruction, index) => (
+                              <div key={`instruction-${index}`} className="text-sm text-slate-1">
+                                • {instruction}
+                              </div>
+                            ))}
+                            {recommendation.backupHeatRequired && (
+                              <div className="text-sm text-slate-1">
+                                • Backup heat required: {recommendation.backupHeatRequired.toLocaleString()} BTU/hr
+                              </div>
+                            )}
                           </div>
                         </div>
                       )}
-                      {recommendation.recommendedCfm && (
-                        <div className={recommendation.warnings.length > 0 || recommendation.instructions.length > 0 || recommendation.backupHeatRequired ? 'mt-3' : ''}>
-                          <div className="text-sm font-medium text-carbon mb-1">Recommended Airflow:</div>
-                          <div className="text-sm text-slate-1">
-                            {recommendation.recommendedCfm.toLocaleString()} CFM
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Technical Details Hidden Indicator */}
-                  {!showTechnicalDetails && (recommendation.warnings.length > 0 || recommendation.instructions.length > 0) && (
-                    <div className="p-2 bg-slate-100 rounded-lg border border-slate-200">
-                      <div className="text-sm text-slate-600 text-center">
-                        {recommendation.warnings.length > 0 && `${recommendation.warnings.length} warning${recommendation.warnings.length > 1 ? 's' : ''}`}
-                        {recommendation.warnings.length > 0 && recommendation.instructions.length > 0 && ' • '}
-                        {recommendation.instructions.length > 0 && `${recommendation.instructions.length} installation note${recommendation.instructions.length > 1 ? 's' : ''}`}
-                        {' hidden - toggle Technical Details to view'}
-                      </div>
                     </div>
                   )}
                 </div>

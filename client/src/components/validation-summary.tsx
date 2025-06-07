@@ -56,7 +56,7 @@ export default function ValidationSummaryComponent({ validationSummary }: Valida
         <div className="flex items-center space-x-2">
           {createElement(validationIcon, { className: `h-5 w-5 ${iconColor}` })}
           <h3 className="text-headline-5 font-semibold text-carbon">
-            Equipment Processing Summary
+            🔧 Equipment Processing Summary (Developer Mode)
           </h3>
         </div>
         {(hasErrors || totalEquipment > 0) && (

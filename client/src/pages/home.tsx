@@ -37,6 +37,7 @@ export default function Home() {
   };
 
   const [isCalculating, setIsCalculating] = useState(false);
+  const [isDeveloperMode, setIsDeveloperMode] = useState(false); // Added developer mode state
 
   const handleCalculate = async (inputs: LoadInputs, prefs: UserPreferences) => {
     setIsCalculating(true);
@@ -62,6 +63,9 @@ export default function Home() {
       setIsCalculating(false);
     }
   };
+
+  // Determine if the environment is a development environment
+  const isDevEnvironment = process.env.NODE_ENV === 'development';
 
   return (
     <div className="min-h-screen bg-white">
@@ -102,14 +106,32 @@ export default function Home() {
                 <p className="text-subtitle-normal text-slate-1 max-w-2xl mx-auto">
                   Calculate heating and cooling loads, then get equipment recommendations based on your specific requirements and preferences.
                 </p>
-                <div className="mt-4">
-                  <button
-                    onClick={handleGenerateValidationReport}
-                    className="px-4 py-2 bg-electric-purple text-white rounded-md hover:bg-electric-purple/80 text-sm"
-                  >
-                    Generate Equipment Validation Report
-                  </button>
-                </div>
+
+                {/* Developer-only validation controls */}
+                {isDevEnvironment && isDeveloperMode && (
+                  <div className="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                    <div className="text-xs text-slate-600 mb-2">
+                      🔧 Developer Tools (Ctrl+Shift+D to toggle)
+                    </div>
+                    <button
+                      onClick={handleGenerateValidationReport}
+                      className="px-3 py-1 bg-slate-600 text-white rounded text-xs hover:bg-slate-700"
+                    >
+                      Generate Validation Report
+                    </button>
+                  </div>
+                )}
+
+                {/* Hidden developer trigger - small corner element */}
+                {isDevEnvironment && !isDeveloperMode && (
+                  <div className="fixed bottom-4 right-4 z-50">
+                    <button
+                      onClick={() => setIsDeveloperMode(true)}
+                      className="w-3 h-3 bg-slate-300 hover:bg-slate-400 rounded-full opacity-20 hover:opacity-60 transition-opacity"
+                      title="Enable developer mode (or use Ctrl+Shift+D)"
+                    />
+                  </div>
+                )}
               </div>
             </div>
             {validationSummary && validationSummary.totalEquipment > 0 && (

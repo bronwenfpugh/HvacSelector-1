@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Settings } from "lucide-react";
 import LoadInputForm from "@/components/load-input-form";
 import EquipmentResults from "@/components/equipment-results";
@@ -38,6 +38,19 @@ export default function Home() {
 
   const [isCalculating, setIsCalculating] = useState(false);
   const [isDeveloperMode, setIsDeveloperMode] = useState(false); // Added developer mode state
+
+  // Keyboard shortcut for developer mode
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.shiftKey && event.key === 'D') {
+        event.preventDefault();
+        setIsDeveloperMode(prev => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const handleCalculate = async (inputs: LoadInputs, prefs: UserPreferences) => {
     setIsCalculating(true);
@@ -134,7 +147,7 @@ export default function Home() {
                 )}
               </div>
             </div>
-            {validationSummary && validationSummary.totalEquipment > 0 && (
+            {validationSummary && validationSummary.totalEquipment > 0 && isDeveloperMode && (
               <ValidationSummaryComponent validationSummary={validationSummary} />
             )}
             <EquipmentResults

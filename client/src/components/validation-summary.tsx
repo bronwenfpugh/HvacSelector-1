@@ -1,5 +1,7 @@
-import { AlertTriangle, Info, XCircle } from "lucide-react";
+
+import { AlertTriangle, CheckCircle2, Info, XCircle } from "lucide-react";
 import { useState, createElement } from "react";
+import { Badge } from "@/components/ui/badge";
 import type { ValidationSummary } from "@shared/schema";
 
 interface ValidationSummaryProps {
@@ -7,9 +9,9 @@ interface ValidationSummaryProps {
 }
 
 export default function ValidationSummaryComponent({ validationSummary }: ValidationSummaryProps) {
-  const [showDetails, setShowDetails] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  if (!validationSummary) {
+  if (!validationSummary || validationSummary.totalEquipment === 0) {
     return null;
   }
 
@@ -19,6 +21,20 @@ export default function ValidationSummaryComponent({ validationSummary }: Valida
   const criticalErrors = errors.filter(e => e.severity === 'critical');
   const warningErrors = errors.filter(e => e.severity === 'warning');
   const infoErrors = errors.filter(e => e.severity === 'info');
+
+  const hasErrors = errors.length > 0;
+  const hasIssues = excludedEquipment > 0 || hasErrors;
+
+  // Badge content and styling
+  const badgeText = hasIssues 
+    ? `${includedEquipment}/${totalEquipment}`
+    : `${totalEquipment}`;
+  
+  const badgeIcon = hasIssues ? "⚠" : "✓";
+  const badgeVariant = hasIssues ? "destructive" : "secondary";
+  const badgeClasses = hasIssues 
+    ? "bg-warning-orange/10 text-warning-orange border-warning-orange/20 hover:bg-warning-orange/20" 
+    : "bg-success-green/10 text-success-green border-success-green/20 hover:bg-success-green/20";
 
   const getSeverityIcon = (severity: string) => {
     switch (severity) {
@@ -46,27 +62,43 @@ export default function ValidationSummaryComponent({ validationSummary }: Valida
     }
   };
 
-  const hasErrors = errors.length > 0;
-  const validationIcon = hasErrors ? AlertTriangle : Info;
-  const iconColor = hasErrors ? "text-warning-orange" : "text-success-green";
+  // Collapsed badge view
+  if (!isExpanded) {
+    return (
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={() => setIsExpanded(true)}
+          className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${badgeClasses}`}
+          title="Equipment validation details"
+        >
+          <span className="text-sm">{badgeIcon}</span>
+          <span>{badgeText}</span>
+          <span className="text-xs opacity-70">validation</span>
+        </button>
+      </div>
+    );
+  }
 
+  // Expanded detailed view
   return (
     <div className="bg-dust-3 border border-dust-1 rounded-lg p-4 mb-6">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center space-x-2">
-          {createElement(validationIcon, { className: `h-5 w-5 ${iconColor}` })}
+          {hasIssues ? (
+            <AlertTriangle className="h-5 w-5 text-warning-orange" />
+          ) : (
+            <CheckCircle2 className="h-5 w-5 text-success-green" />
+          )}
           <h3 className="text-headline-5 font-semibold text-carbon">
             🔧 Equipment Processing Summary (Developer Mode)
           </h3>
         </div>
-        {(hasErrors || totalEquipment > 0) && (
-          <button
-            onClick={() => setShowDetails(!showDetails)}
-            className="text-electric-purple hover:text-electric-purple/80 text-button-normal font-medium"
-          >
-            {showDetails ? 'Hide Details' : 'Show Details'}
-          </button>
-        )}
+        <button
+          onClick={() => setIsExpanded(false)}
+          className="text-electric-purple hover:text-electric-purple/80 text-button-normal font-medium"
+        >
+          Collapse
+        </button>
       </div>
 
       <div className="text-description-regular text-slate-1 mb-3">
@@ -122,7 +154,7 @@ export default function ValidationSummaryComponent({ validationSummary }: Valida
       )}
 
       {/* Detailed error list */}
-      {showDetails && (
+      {hasErrors && (
         <div className="border-t border-dust-1 pt-3">
           <div className="space-y-3">
             {errors.map((error, index) => (

@@ -1,0 +1,13 @@
+manufacturer,model,price,equipmentType,distributionType,staging,nominalTons,nominalBtu,heatingCapacityBtu,coolingCapacityBtu,latentCoolingBtu,afue,seer,hspf,isActive,unitLocation,systemFunction,imageUrl
+American Standard,S9V2-40000,2368,furnace,ducted,single_stage,,40000,38400,,,0.96,,,TRUE,indoor,heating,
+American Standard,S9V2-40000,2590,furnace,ducted,two_stage,,40000,38400,,,0.96,,,TRUE,indoor,heating,
+American Standard,S9V2-40000,2469,furnace,ducted,variable_speed,,40000,38400,,,0.96,,,TRUE,indoor,heating,
+American Standard,S9V2-80000,4388,furnace,ducted,single_stage,,80000,76800,,,0.96,,,TRUE,indoor,heating,
+American Standard,S9V2-80000,4497,furnace,ducted,two_stage,,80000,76800,,,0.96,,,TRUE,indoor,heating,
+American Standard,S9V2-80000,4338,furnace,ducted,variable_speed,,80000,76800,,,0.96,,,TRUE,indoor,heating,
+Rheem,R96V-40000,2319,furnace,ducted,single_stage,,40000,38400,,,0.96,,,TRUE,indoor,heating,
+Rheem,R96V-40000,2559,furnace,ducted,two_stage,,40000,38400,,,0.96,,,TRUE,indoor,heating,
+Rheem,R96V-40000,2683,furnace,ducted,variable_speed,,40000,38400,,,0.96,,,TRUE,indoor,heating,
+Rheem,R96V-80000,4332,furnace,ducted,single_stage,,80000,76800,,,0.96,,,TRUE,indoor,heating,
+Rheem,R96V-80000,4351,furnace,ducted,two_stage,,80000,76800,,,0.96,,,TRUE,indoor,heating,
+Rheem,R96V-80000,4503,furnace,ducted,variable_speed,,80000,76800,,,0.96,,,TRUE,indoor,heating,

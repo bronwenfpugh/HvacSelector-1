@@ -102,6 +102,7 @@ export const userPreferencesSchema = z.object({
   sizingPreference: z.enum(['size_to_heating', 'size_to_cooling']).optional(),
   brandFilter: z.array(z.string()).optional(),
   stagingFilter: z.array(z.enum(['single_stage', 'two_stage', 'variable_speed'])).optional(),
+  unitLocationFilter: z.array(z.enum(['indoor', 'outdoor', 'split_system'])).optional(),
   minAfue: z.number().optional(),
   maxPrice: z.number().optional(),
 });

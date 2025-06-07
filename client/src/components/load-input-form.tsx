@@ -33,6 +33,16 @@ export default function LoadInputForm({
   const [latentCooling, setLatentCooling] = useState(0);
   const [shr, setShr] = useState(0);
 
+  // Initialize unit location filter with all options if empty
+  useEffect(() => {
+    if (!preferences.unitLocationFilter || preferences.unitLocationFilter.length === 0) {
+      onPreferencesChange({
+        ...preferences,
+        unitLocationFilter: ['indoor', 'outdoor', 'split_system']
+      });
+    }
+  }, []);
+
   // Calculate derived values and validate relationships
   useEffect(() => {
     const latent = Math.max(0, loadInputs.totalCoolingBtu - loadInputs.sensibleCoolingBtu);
@@ -115,7 +125,34 @@ export default function LoadInputForm({
       ? [...preferences.equipmentTypes, type as any]
       : preferences.equipmentTypes.filter(t => t !== type);
     
-    onPreferencesChange({ ...preferences, equipmentTypes: newTypes });
+    // Smart unit location auto-selection
+    let newUnitLocationFilter = preferences.unitLocationFilter || [];
+    
+    if (checked) {
+      // Auto-select unit location based on equipment type
+      if (type === 'furnace' && !newUnitLocationFilter.includes('indoor')) {
+        newUnitLocationFilter = [...newUnitLocationFilter, 'indoor'];
+      } else if (type === 'ac' && !newUnitLocationFilter.includes('outdoor')) {
+        newUnitLocationFilter = [...newUnitLocationFilter, 'outdoor'];
+      } else if (type === 'heat_pump' && !newUnitLocationFilter.includes('split_system')) {
+        newUnitLocationFilter = [...newUnitLocationFilter, 'split_system'];
+      } else if (type === 'boiler' && !newUnitLocationFilter.includes('indoor')) {
+        newUnitLocationFilter = [...newUnitLocationFilter, 'indoor'];
+      } else if (type === 'furnace_ac_combo' && !newUnitLocationFilter.includes('split_system')) {
+        newUnitLocationFilter = [...newUnitLocationFilter, 'split_system'];
+      }
+    } else {
+      // If all equipment types are unchecked, reset to all unit locations
+      if (newTypes.length === 0) {
+        newUnitLocationFilter = ['indoor', 'outdoor', 'split_system'];
+      }
+    }
+    
+    onPreferencesChange({ 
+      ...preferences, 
+      equipmentTypes: newTypes,
+      unitLocationFilter: newUnitLocationFilter.length > 0 ? newUnitLocationFilter : undefined
+    });
   };
 
   const handleSizingPreferenceChange = (value: string) => {
@@ -136,6 +173,17 @@ export default function LoadInputForm({
     onPreferencesChange({
       ...preferences,
       brandFilter: value === 'any' ? undefined : [value]
+    });
+  };
+
+  const handleUnitLocationFilterChange = (location: string, checked: boolean) => {
+    const newLocationFilter = checked 
+      ? [...(preferences.unitLocationFilter || []), location as any]
+      : (preferences.unitLocationFilter || []).filter(l => l !== location);
+    
+    onPreferencesChange({
+      ...preferences,
+      unitLocationFilter: newLocationFilter.length > 0 ? newLocationFilter : undefined
     });
   };
 
@@ -460,6 +508,33 @@ export default function LoadInputForm({
                   <SelectItem value="American Standard">American Standard</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+
+            {/* Unit Location Filter */}
+            <div>
+              <Label className="text-sm font-medium text-carbon mb-3 block">Unit Location</Label>
+              <div className="space-y-2">
+                {[
+                  { id: 'indoor', label: 'Indoor Units', description: 'Furnaces, boilers, indoor components' },
+                  { id: 'outdoor', label: 'Outdoor Units', description: 'Air conditioners, outdoor components' },
+                  { id: 'split_system', label: 'Split Systems', description: 'Heat pumps, combo systems' },
+                ].map(({ id, label, description }) => (
+                  <div key={id} className="flex items-start space-x-2">
+                    <Checkbox
+                      id={`location-${id}`}
+                      checked={preferences.unitLocationFilter?.includes(id as any) || false}
+                      onCheckedChange={(checked) => handleUnitLocationFilterChange(id, checked as boolean)}
+                      className="mt-0.5"
+                    />
+                    <div className="flex-1">
+                      <Label htmlFor={`location-${id}`} className="text-sm font-medium text-carbon cursor-pointer">
+                        {label}
+                      </Label>
+                      <div className="text-xs text-slate-2">{description}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Staging Filter */}

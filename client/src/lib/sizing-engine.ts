@@ -468,6 +468,13 @@ function passesFilters(equipment: Equipment, preferences: UserPreferences): bool
     return false;
   }
 
+  // Unit location filter
+  if (preferences.unitLocationFilter && preferences.unitLocationFilter.length > 0) {
+    if (!preferences.unitLocationFilter.includes(equipment.unitLocation)) {
+      return false;
+    }
+  }
+
   // Price filter
   if (preferences.maxPrice && equipment.price > preferences.maxPrice) {
     return false;

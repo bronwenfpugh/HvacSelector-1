@@ -24,7 +24,11 @@ export const equipmentDatabase: Equipment[] = [
     cabinetWidth: null,
     cabinetHeight: null,
     cabinetDepth: null,
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"
+    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
+    comfortRating: 2,
+    upfrontCostRating: 2,
+    operatingCostRating: 3,
+    backupHeatOption: "Not needed"
   },
   {
     id: "american-standard-s9v2-40000-two",

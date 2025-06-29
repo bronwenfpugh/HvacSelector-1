@@ -43,6 +43,11 @@ export const equipment = pgTable("equipment", {
   cabinetDepth: real("cabinet_depth"), // inches
   
   imageUrl: text("image_url").notNull(),
+  // Add homeowner-friendly ratings
+  comfortRating: integer("comfort_rating"), // 1-3
+  upfrontCostRating: integer("upfront_cost_rating"), // 1-4
+  operatingCostRating: integer("operating_cost_rating"), // 1-4
+  backupHeatOption: text("backup_heat_option"),
 });
 
 // Load calculation inputs with cross-validation
@@ -116,6 +121,11 @@ const baseEquipmentSchema = z.object({
   distributionType: z.enum(['ducted', 'ductless', 'hydronic']),
   staging: z.enum(['single_stage', 'two_stage', 'variable_speed']),
   imageUrl: z.string(),
+  // Add homeowner-friendly ratings
+  comfortRating: z.number().int().min(1).max(3),
+  upfrontCostRating: z.number().int().min(1).max(4),
+  operatingCostRating: z.number().int().min(1).max(4),
+  backupHeatOption: z.string(),
 });
 
 const furnaceEquipmentSchema = baseEquipmentSchema.extend({
@@ -262,7 +272,12 @@ export type TypedEquipment = FurnaceEquipment | AcEquipment | HeatPumpEquipment 
 
 export const insertEquipmentSchema = createInsertSchema(equipment);
 export type InsertEquipment = z.infer<typeof insertEquipmentSchema>;
-export type Equipment = typeof equipment.$inferSelect;
+export type Equipment = typeof equipment.$inferSelect & {
+  comfortRating: number;
+  upfrontCostRating: number;
+  operatingCostRating: number;
+  backupHeatOption: string;
+};
 export type LoadInputs = z.infer<typeof loadInputsSchema>;
 export type UserPreferences = z.infer<typeof userPreferencesSchema>;
 export type EquipmentRecommendation = z.infer<typeof equipmentRecommendationSchema>;

@@ -243,6 +243,34 @@ export default function EquipmentResults({ recommendations, isLoading }: Equipme
                     </div>
                   </div>
 
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                    {/* Homeowner-Friendly Ratings */}
+                    <div>
+                      <div className="text-sm font-medium text-slate-1">Comfort</div>
+                      <div className="text-lg">
+                        {Array.from({ length: recommendation.equipment.comfortRating }).map((_, i) => '⭐').join('')}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium text-slate-1">Upfront Cost</div>
+                      <div className="text-lg">
+                        {Array.from({ length: recommendation.equipment.upfrontCostRating }).map((_, i) => '💵').join('')}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium text-slate-1">Operating Cost</div>
+                      <div className="text-lg">
+                        {Array.from({ length: recommendation.equipment.operatingCostRating }).map((_, i) => '💵').join('')}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium text-slate-1">Backup Heat</div>
+                      <div className="text-base">
+                        {recommendation.equipment.backupHeatOption}
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="flex items-center space-x-4 mb-4">
                     <Badge variant="secondary" className={`${getStatusColor(recommendation.sizingStatus)} border-0`}>
                       {getStatusIcon(recommendation.sizingStatus)}
